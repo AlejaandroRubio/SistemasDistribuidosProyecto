@@ -1,0 +1,62 @@
+@startuml
+class Backend
+{
+    +GetData(dataType: DataType): ChartData
+    +AcceptInput(input: InputData): void
+}
+
+class Frontend
+{
+    - Windows Forms Document
+    +RenderChart(chartData: ChartData): void
+    +HandleInput(input: InputData): void
+}
+
+class ChartData
+{
+    -data: Data
+    +GetData(): Data
+    +SetData(data: Data): void
+}
+
+class Data
+{
+    -dataPoints: List<DataPoint>
+    +AddDataPoint(point: DataPoint): void
+    +GetDataPoints(): List<DataPoint>
+}
+
+class DataPoint
+{
+    -x: double
+    -y: double
+    -z: double
+    +GetX(): double
+    +GetY(): double
+    +GetZ(): double
+}
+
+enum DataType
+{
+    2D
+    3D
+}
+
+class InputData
+{
+    -inputType: InputType
+    -inputValue: string
+    +GetInputType(): InputType
+    +GetInputValue(): string
+}
+
+
+Backend --> Frontend: Genera
+Frontend --> Backend: Communica
+Frontend --> ChartData: Usa
+Backend --> ChartData: Usa
+ChartData --> Data: Contiene
+Data --> DataPoint: Contiene
+Frontend --> InputData: Accepta
+Backend --> InputData: Accepta
+@enduml
