@@ -1,1 +1,1 @@
-# SistemasDistribuidosProyecto
+# Sistemas Distribuidos : Visualizacion De Graficas
