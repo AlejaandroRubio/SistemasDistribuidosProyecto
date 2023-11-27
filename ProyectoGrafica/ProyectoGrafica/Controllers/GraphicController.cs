@@ -12,7 +12,7 @@ namespace Graficas.Controllers
 {
     public class GraphicController : ApiController
     {
-        private GraphicDataRepository _GraphicDataRepository;
+        static GraphicDataRepository _GraphicDataRepository;
 
         public GraphicController() 
         {
