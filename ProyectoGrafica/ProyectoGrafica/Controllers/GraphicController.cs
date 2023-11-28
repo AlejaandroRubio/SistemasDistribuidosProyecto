@@ -19,18 +19,10 @@ namespace Graficas.Controllers
             _GraphicDataRepository = new GraphicDataRepository();
         }
         
-        
         public GraphicsData[] Get()
         {
             return _GraphicDataRepository.GetAllGraphicPoints();
         }
-
-        /* Devuelve un punto dentro de la grafica */
-        public GraphicsData Get(int id)
-        {
-            return null;
-        }
-
 
         public bool Post([FromBody]GraphicsData data)
         {
@@ -38,15 +30,15 @@ namespace Graficas.Controllers
         }
 
     
-        public void Put(int id, [FromBody]string value)
+        public bool Put(int id, [FromBody] GraphicsData data)
         {
-
+           return _GraphicDataRepository.PutData(id, data);
         }
 
        
-        public void Delete(int id)
+        public bool Delete(int id)
         {
-
+            return _GraphicDataRepository.DeleteData(id);
         }
     }
 }

@@ -68,5 +68,78 @@ namespace Graficas.Services
             return false;
         }
 
+        /* Recuperamos es la cache entera */
+        /* Value es la lista de puntos completa */
+        /* ID = posicion en la lista */
+
+        public bool PutData(int id, GraphicsData value)
+        {
+            var ctx = HttpContext.Current;
+
+            if (ctx != null)
+            {
+                GraphicsData[] tempData = (GraphicsData[])ctx.Cache[CacheKey];
+
+                List<GraphicsData> tempList = tempData.ToList();
+
+                tempList[id].x = value.x;
+                tempList[id].y = value.y;
+                tempList[id].z = value.z;
+
+                return true;
+            }
+      
+
+            return false;
+        }
+
+        public bool DeleteData(int id) 
+        {
+            var ctx = HttpContext.Current;
+
+            if (ctx != null && id != -1)
+            {
+                GraphicsData[] tempData = (GraphicsData[])ctx.Cache[CacheKey];
+
+                List<GraphicsData> tempList = tempData.ToList();
+
+                tempList.RemoveAt(id);
+
+                tempData = tempList.ToArray();
+
+                ctx.Cache[CacheKey] = tempData;
+
+                return true;
+            }
+            else if (ctx != null && id == -1)
+            {
+                DeleteAllData();
+            }
+
+            return false;
+        }
+
+        public bool DeleteAllData()
+        {
+            var ctx = HttpContext.Current;
+
+            if (ctx != null)
+            {
+                GraphicsData[] tempData = (GraphicsData[])ctx.Cache[CacheKey];
+
+                List<GraphicsData> tempList = tempData.ToList();
+
+                tempList.RemoveRange(0, tempList.Count);
+
+                tempData = tempList.ToArray();
+
+                ctx.Cache[CacheKey] = tempData;
+
+                return true;
+            }
+
+            return false;
+        }
+
     }
 }
