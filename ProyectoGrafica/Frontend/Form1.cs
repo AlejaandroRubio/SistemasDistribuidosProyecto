@@ -10,9 +10,11 @@ using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 using Graficas.Models;
 using Graficas.Services;
 using Newtonsoft.Json;
+
 
 namespace Frontend
 {
@@ -57,8 +59,9 @@ namespace Frontend
             var graphicJson = await response.Content.ReadAsStringAsync();
 
 
-            DefaultValues();
+            GET(Action.post, index);
 
+            DefaultValues();
         }
 
         private async void PUT()
@@ -76,7 +79,7 @@ namespace Frontend
             var request = new HttpRequestMessage(HttpMethod.Put, "https://localhost:44366/api/Graphic/" + index);
 
             var content = new StringContent(putGraphicStr, null, "application/json");
-            
+
             request.Content = content;
 
             var response = await client.SendAsync(request);
@@ -85,14 +88,17 @@ namespace Frontend
 
             var graphicJson = await response.Content.ReadAsStringAsync();
 
+
+            GET(Action.put, index);
+
             DefaultValues();
         }
 
-        
+
 
         private async void DeleteByIndex()
         {
-           var putGraphic = new GraphicsData();
+            var putGraphic = new GraphicsData();
             putGraphic.x = x;
             putGraphic.y = y;
             putGraphic.z = z;
@@ -106,7 +112,7 @@ namespace Frontend
             /* Susceptible a Borrarse */
 
             var content = new StringContent(putGraphicStr, null, "application/json");
-            
+
             request.Content = content;
 
             var response = await client.SendAsync(request);
@@ -117,8 +123,33 @@ namespace Frontend
 
             /* --------------------------------- */
 
+            GET(Action.delete, index);
+
             DefaultValues();
-            
+        }
+
+        void UpdateChart(GraphicsData dataPoint, Action action, int index)
+        {
+            /* Para el  3d utilizar Z
+             * Para el 2D definir Z como "null"
+             */
+            switch(action)
+            {
+                case Action.post:
+                    DataPointsChart.Series["Data Points"].Points.AddXY(dataPoint.x, dataPoint.y);
+                    break;
+                case Action.put:
+                    DataPointsChart.Series["Data Points"].Points[index].SetValueXY(dataPoint.x, dataPoint.y);
+                    break;
+                case Action.delete:
+                    if (index == -1)
+                        DataPointsChart.Series["Data Points"].Points.Clear();
+                    else
+                        DataPointsChart.Series["Data Points"].Points.RemoveAt(index);
+                    break;
+            }
+
+            DataPointsChart.Invalidate();
         }
 
 
@@ -127,7 +158,7 @@ namespace Frontend
 
             // MessageBox.Show(DropDownBox.SelectedIndex);
 
-            switch(DropDownBox.SelectedIndex)
+            switch (DropDownBox.SelectedIndex)
             {
                 case 0:
                     POST();
@@ -142,7 +173,7 @@ namespace Frontend
             }
         }
 
-        private async void GetButton_Click(object sender, EventArgs e)
+        private async void GET(Action action, int index)
         {
             var client = new HttpClient();
             var request = new HttpRequestMessage(HttpMethod.Get, "https://localhost:44366/api/Graphic");
@@ -150,16 +181,132 @@ namespace Frontend
             var response = await client.SendAsync(request);
             response.EnsureSuccessStatusCode();
             var graphicJson = await response.Content.ReadAsStringAsync();
-            MessageBox.Show(graphicJson);      
+
+            UpdateChart(SanitazeString(graphicJson, action, index), action, index);
+
+            // MessageBox.Show(graphicJson);   
         }
 
+        /*
+         * Recibir el indice 
+         * 
+         * 
+         * 
+         */
 
-      #region LEGACY
-        
+        GraphicsData SanitazeString(string json, Action action, int index)
+        {
+            GraphicsData tempData = new GraphicsData();
+            float sanitizedX = 0;
+            float sanitizedY = 0;
+            float sanitizedZ = 0;
+
+            // Maximo 2410 Datos
+            char[] tJs = json.ToCharArray();
+
+
+            if (action == Action.post)
+            {
+                for (int i = json.Length - 1; i > 0; i--)
+                {
+                    if (tJs[i] == 122) // 122 = z
+                    {
+                        float.TryParse(GetNumbersFromJson(ref tJs, i), out sanitizedZ);
+                    }
+
+                    if (tJs[i] == 121) // 121 = y
+                    {
+                        float.TryParse(GetNumbersFromJson(ref tJs, i), out sanitizedY);
+                    }
+
+                    if (tJs[i] == 120) // 120 = x
+                    {
+                        float.TryParse(GetNumbersFromJson(ref tJs, i), out sanitizedX);
+                        goto exit;
+                    }
+                }
+            }
+            else if (action == Action.put)
+            {
+                #region PUT
+                int tempIndexX = index;
+                bool inTheRightIndex = false;
+
+                for (int i = 0; i < json.Length; i++)
+                {
+                    if (tJs[i] == 120 && tempIndexX <= 0) // 120 = x
+                    {
+                        float.TryParse(GetNumbersFromJson(ref tJs, i), out sanitizedX);
+                        inTheRightIndex = true;
+                    }
+
+                    if (tJs[i] == 121 && inTheRightIndex) // 121 = y
+                    {
+                        float.TryParse(GetNumbersFromJson(ref tJs, i), out sanitizedY);
+                    }
+
+                    if (tJs[i] == 122 && inTheRightIndex) // 122 = z
+                    {
+                        float.TryParse(GetNumbersFromJson(ref tJs, i), out sanitizedZ);
+                        MessageBox.Show("Z| Caracter en [" + i +"]" + "es [" + tJs[i] + "] y el Indice es [" + tempIndexX + "], Valor Conseguido [" + sanitizedZ + "]");
+                        goto exit;
+                    }
+
+                    if (tempIndexX >= 0 && tJs[i] == 120) // 120 = x
+                        tempIndexX--;
+                }
+                #endregion
+            }
+            else if (action == Action.delete)
+            {
+
+            }
+
+
+        exit:
+            tempData.x = sanitizedX;
+            tempData.y = sanitizedY;
+            tempData.z = sanitizedZ;
+
+
+            MessageBox.Show("TempData  " +
+                            " X = " + tempData.x +
+                            " Y = " + tempData.y +
+                            " Z = " + tempData.z);
+
+
+               return tempData;
+
+        }
+        // SOLO COMAS
+        string GetNumbersFromJson(ref char[] tJs, int i)
+        {
+            string tempValue = "";
+            int j = 0;
+            /* Idenitificar X, Y, Z para conseguir el numero asignado a cada una */
+            j = i + 3;
+            while (true)
+            {
+                if (tJs[j] == 46)
+                    tempValue += ",";
+                else
+                    tempValue += tJs[j];
+
+                j++;
+
+                if (tJs[j] == 44 || tJs[j] == 125)
+                    break;
+                
+            }
+            return tempValue;
+        }
+
+        #region LEGACY
+
         private void XTextBox_TextChanged(object sender, EventArgs e)
         {
             float.TryParse(XTextBox.Text, out x);
-            
+
         }
 
         private void YTextBox_TextChanged(object sender, EventArgs e)
@@ -184,6 +331,14 @@ namespace Frontend
 
 
 
+
+
+        private void chart1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        #endregion
         void DefaultValues()
         {
             XTextBox.Text = "";
@@ -195,7 +350,12 @@ namespace Frontend
         }
 
 
+        enum Action
+        {
+            post,
+            put,
+            delete,
+        }
 
     }
-#endregion
 }
