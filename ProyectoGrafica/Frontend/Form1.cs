@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics.Contracts;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Policy;
@@ -21,6 +22,8 @@ namespace Frontend
     public partial class Form1 : Form
     {
 
+        string path = "C:\\Program Files\\SistemasDistribuidosProyecto\\ProyectoGrafica\\Frontend\\DEBUGArchivosLocales\\Local.txt";
+
         float x;
         float y;
         float z;
@@ -32,14 +35,23 @@ namespace Frontend
             InitializeComponent();
         }
 
-        private async void POST()
+        private async Task POST(GraphicsData data)
         {
 
             var newGraphic = new GraphicsData();
 
-            newGraphic.x = x;
-            newGraphic.y = y;
-            newGraphic.z = z;
+            if (data == null)
+            {
+                newGraphic.x = x;
+                newGraphic.y = y;
+                newGraphic.z = z;
+            }
+            else
+            {
+                newGraphic.x = data.x;
+                newGraphic.y = data.y;
+                newGraphic.z = data.z;
+            }
 
             var newgraphicStr = JsonConvert.SerializeObject(newGraphic, Newtonsoft.Json.Formatting.Indented);
 
@@ -161,7 +173,7 @@ namespace Frontend
             switch (DropDownBox.SelectedIndex)
             {
                 case 0:
-                    POST();
+                    POST(null);
                     break;
                 case 1:
                     if (index != -1)
@@ -248,7 +260,7 @@ namespace Frontend
                     if (tJs[i] == 122 && inTheRightIndex) // 122 = z
                     {
                         float.TryParse(GetNumbersFromJson(ref tJs, i), out sanitizedZ);
-                        MessageBox.Show("Z| Caracter en [" + i +"]" + "es [" + tJs[i] + "] y el Indice es [" + tempIndexX + "], Valor Conseguido [" + sanitizedZ + "]");
+                        MessageBox.Show("Z| Caracter en [" + i + "]" + "es [" + tJs[i] + "] y el Indice es [" + tempIndexX + "], Valor Conseguido [" + sanitizedZ + "]");
                         goto exit;
                     }
 
@@ -269,37 +281,16 @@ namespace Frontend
             tempData.z = sanitizedZ;
 
 
-            MessageBox.Show("TempData  " +
+            /* MessageBox.Show("TempData  " +
                             " X = " + tempData.x +
                             " Y = " + tempData.y +
                             " Z = " + tempData.z);
 
-
+            */
                return tempData;
 
         }
-        // SOLO COMAS
-        string GetNumbersFromJson(ref char[] tJs, int i)
-        {
-            string tempValue = "";
-            int j = 0;
-            /* Idenitificar X, Y, Z para conseguir el numero asignado a cada una */
-            j = i + 3;
-            while (true)
-            {
-                if (tJs[j] == 46)
-                    tempValue += ",";
-                else
-                    tempValue += tJs[j];
 
-                j++;
-
-                if (tJs[j] == 44 || tJs[j] == 125)
-                    break;
-                
-            }
-            return tempValue;
-        }
 
         #region LEGACY
 
@@ -357,5 +348,78 @@ namespace Frontend
             delete,
         }
 
+        private void LoadTxt_Click(object sender, EventArgs e)
+        {
+            
+            ReadAndLoadTXT();
+        }
+
+        public async void ReadAndLoadTXT()
+        {
+            string[] tJs = File.ReadAllLines(path);
+
+            float sanitizedX = 0;
+            float sanitizedY = 0;
+            float sanitizedZ = 0;
+
+            char[] tempCharArr = { };
+
+            for (int i = 0; i < tJs.Length; i++)
+            {
+                GraphicsData tempData = new GraphicsData();
+
+                tempCharArr = tJs[i].ToCharArray();
+
+                for (int j = 0; j < tempCharArr.Length - 1; j++)
+                {
+                    if (tempCharArr[j] == 120) // 120 = x
+                    {
+                        float.TryParse(GetNumbersFromJson(ref tempCharArr, j), out sanitizedX);
+                        tempData.x = sanitizedX;
+                    }
+
+                    if (tempCharArr[j] == 121) // 121 = y
+                    {
+                        float.TryParse(GetNumbersFromJson(ref tempCharArr, j), out sanitizedY);
+                        tempData.y = sanitizedY;
+                    }
+
+                    if (tempCharArr[j] == 122) // 120 = z
+                    {
+                        float.TryParse(GetNumbersFromJson(ref tempCharArr, j), out sanitizedZ);
+                        tempData.z = sanitizedZ;
+
+                        await Task.Delay(2);
+                        await POST(tempData);
+                    }
+                }
+            }
+
+        }
+
+        // SOLO COMAS
+        string GetNumbersFromJson(ref char[] tJs, int i)
+        {
+            string tempValue = "";
+            int j = 0;
+            /* Idenitificar X, Y, Z para conseguir el numero asignado a cada una */
+            j = i + 3;
+            while (true)
+            {
+                if (tJs[j] == 46)
+                    tempValue += ",";
+                else
+                    tempValue += tJs[j];
+
+                if (j < tJs.Length - 1)
+                    j++;
+                else
+                    break;
+
+                if (tJs[j] == 44 || tJs[j] == 125)
+                    break;
+            }
+            return tempValue;
+        }
     }
 }

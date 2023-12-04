@@ -1,14 +1,21 @@
 ﻿using Graficas.Models;
+using Microsoft.SqlServer.Server;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
 using System.Web;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Graficas.Services
 {
     public class GraphicDataRepository
     {
         private const string CacheKey = "GraphicsKey";
+        string path = "C:\\Program Files\\SistemasDistribuidosProyecto\\ProyectoGrafica\\ProyectoGrafica\\Archivos_Compartidos\\Global.txt";
+
 
         public GraphicDataRepository()
         {
@@ -20,23 +27,12 @@ namespace Graficas.Services
 
         public GraphicsData[] GetAllGraphicPoints()
         {
-            var ctx = HttpContext.Current;
 
             /* Si la cache no esta vacia */
-            if (ctx != null)
-                return (GraphicsData[])ctx.Cache[CacheKey];
+            return FormatData();
             
-            /* Si la cache esta vacia */
-            return new GraphicsData[]
-            {
-                    new GraphicsData
-                    {
-                        x = -1, 
-                        y = -1, 
-                        z = -1
-                    }
-            };
         }
+
 
         public bool SaveDataPoint(GraphicsData data)
         {
@@ -56,6 +52,9 @@ namespace Graficas.Services
                     dataList.Add(data);
                     ctx.Cache[CacheKey] = dataList.ToArray();
 
+                    // Escribir al TXT Global
+                    WritePostToTXT(dataList[dataList.Count - 1]);
+
                     return true;
                 }
                 catch (Exception ex)
@@ -73,73 +72,139 @@ namespace Graficas.Services
         /* ID = posicion en la lista */
 
         public bool PutData(int id, GraphicsData value)
-        {
-            var ctx = HttpContext.Current;
+        {       
+                // Leer todas las líneas del archivo
+                string[] lines = File.ReadAllLines(path);
+                string dataModificada= "x:/" + value.x + ", y:/" + value.y + ", z:/" + value.z;
+                // Modificar la línea deseada (supongamos que quieres cambiarla por "Nueva línea")
+                lines[id + 1] = dataModificada;
+                // Sobrescribir el archivo con las líneas modificadas
+                File.WriteAllLines(path, lines);
+            
 
-            if (ctx != null)
-            {
-                GraphicsData[] tempData = (GraphicsData[])ctx.Cache[CacheKey];
-
-                List<GraphicsData> tempList = tempData.ToList();
-
-                tempList[id].x = value.x;
-                tempList[id].y = value.y;
-                tempList[id].z = value.z;
-
-                return true;
-            }
-      
-
-            return false;
+            return true;
         }
 
         public bool DeleteData(int id) 
         {
-            var ctx = HttpContext.Current;
-
-            if (ctx != null && id != -1)
+            if (id != -1)
             {
-                GraphicsData[] tempData = (GraphicsData[])ctx.Cache[CacheKey];
-
-                List<GraphicsData> tempList = tempData.ToList();
-
-                tempList.RemoveAt(id);
-
-                tempData = tempList.ToArray();
-
-                ctx.Cache[CacheKey] = tempData;
-
-                return true;
+                string[] lines = File.ReadAllLines(path);
+                // Índice de línea que deseas borrar
+                int lineIndexToDelete = id; 
+                // Eliminar la línea deseada por índice
+                lines = lines.Where((line, index) => index != lineIndexToDelete).ToArray();
+                // Sobrescribir el archivo con las líneas restantes
+                File.WriteAllLines(path, lines);
             }
-            else if (ctx != null && id == -1)
+            else if (id == -1)
             {
                 DeleteAllData();
             }
 
-            return false;
+            return true;
         }
 
         public bool DeleteAllData()
         {
-            var ctx = HttpContext.Current;
+            string[] lines = {"[Datos]" };
+            // Sobrescribir el archivo con las líneas modificadas
+            File.WriteAllLines(path, lines);
 
-            if (ctx != null)
+            return true;
+        }
+
+        void CreateGlobalTXT()
+        {
+            if (!File.Exists(path))
             {
-                GraphicsData[] tempData = (GraphicsData[])ctx.Cache[CacheKey];
+                // Create a file to write to.
+                using (StreamWriter sw = File.CreateText(path))
+                {
+                    sw.WriteLine("[Datos]");
+                }
+            }
+        }
 
-                List<GraphicsData> tempList = tempData.ToList();
+        // Esto es el input del usuario al archivo global
+        void WritePostToTXT(GraphicsData data)
+        {
+            CreateGlobalTXT();
 
-                tempList.RemoveRange(0, tempList.Count);
+            using (StreamWriter sw = File.AppendText(path))
+            { 
+                sw.WriteLine("x:/" + data.x + ", y:/" + data.y + ", z:/" + data.z);
+            }
+        }
 
-                tempData = tempList.ToArray();
 
-                ctx.Cache[CacheKey] = tempData;
+        // GET
+        GraphicsData[] FormatData()
+        {
+            string[] tJs = File.ReadAllLines(path);
 
-                return true;
+            GraphicsData[] tempData = new GraphicsData[tJs.Length];
+
+            float sanitizedX = 0;
+            float sanitizedY = 0;
+            float sanitizedZ = 0;
+
+            char[] tempCharArr = { };
+
+            for (int i = 0; i < tJs.Length; i++)
+            {
+                tempCharArr = tJs[i].ToCharArray();
+                tempData[i] = new GraphicsData();
+
+                for (int j = 0; j < tempCharArr.Length - 1; j++)
+                {
+                    if (tempCharArr[j] == 120) // 120 = x
+                    {
+                        float.TryParse(GetNumbersFromJson(ref tempCharArr, j), out sanitizedX);
+                        tempData[i].x = sanitizedX;
+                    }
+
+                    if (tempCharArr[j] == 121) // 121 = y
+                    {
+                        float.TryParse(GetNumbersFromJson(ref tempCharArr, j), out sanitizedY);
+                        tempData[i].y = sanitizedY;
+                    }
+
+                    if (tempCharArr[j] == 122) // 120 = z
+                    {
+                        float.TryParse(GetNumbersFromJson(ref tempCharArr, j), out sanitizedZ);
+                        tempData[i].z = sanitizedZ;
+                    }
+                }
             }
 
-            return false;
+            return tempData;
         }
+
+        string GetNumbersFromJson(ref char[] tJs, int i)
+        {
+            string tempValue = "";
+            int j = 0;
+            /* Idenitificar X, Y, Z para conseguir el numero asignado a cada una */
+            j = i + 3;
+            while (true)
+            {
+                if (tJs[j] == 46)
+                    tempValue += ",";
+                else
+                    tempValue += tJs[j];
+
+                if (j < tJs.Length - 1)
+                    j++;
+                else
+                    break;
+
+                if (tJs[j] == 44 || tJs[j] == 125)
+                    break;
+            }
+            return tempValue;
+        }
+
 
     }
 }

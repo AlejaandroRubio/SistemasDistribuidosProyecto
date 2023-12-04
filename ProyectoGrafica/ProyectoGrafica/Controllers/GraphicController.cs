@@ -34,7 +34,6 @@ namespace Graficas.Controllers
         {
            return _GraphicDataRepository.PutData(id, data);
         }
-
        
         public bool Delete(int id)
         {

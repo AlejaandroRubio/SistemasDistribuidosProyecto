@@ -42,12 +42,13 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.DataPointsChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.LoadTxt = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.DataPointsChart)).BeginInit();
             this.SuspendLayout();
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(50, 221);
+            this.button1.Location = new System.Drawing.Point(15, 221);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 0;
@@ -135,14 +136,14 @@
             this.label3.TabIndex = 10;
             this.label3.Text = "Z";
             // 
-            // chart1
+            // DataPointsChart
             // 
             chartArea1.Name = "ChartArea1";
             this.DataPointsChart.ChartAreas.Add(chartArea1);
             legend1.Name = "Legend1";
             this.DataPointsChart.Legends.Add(legend1);
             this.DataPointsChart.Location = new System.Drawing.Point(163, 12);
-            this.DataPointsChart.Name = "chart1";
+            this.DataPointsChart.Name = "DataPointsChart";
             series1.ChartArea = "ChartArea1";
             series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
             series1.Legend = "Legend1";
@@ -153,11 +154,22 @@
             this.DataPointsChart.Text = "DataPointsCharts";
             this.DataPointsChart.Click += new System.EventHandler(this.chart1_Click);
             // 
+            // LoadTxt
+            // 
+            this.LoadTxt.Location = new System.Drawing.Point(15, 192);
+            this.LoadTxt.Name = "LoadTxt";
+            this.LoadTxt.Size = new System.Drawing.Size(75, 23);
+            this.LoadTxt.TabIndex = 12;
+            this.LoadTxt.Text = "Load Data";
+            this.LoadTxt.UseVisualStyleBackColor = true;
+            this.LoadTxt.Click += new System.EventHandler(this.LoadTxt_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(572, 265);
+            this.Controls.Add(this.LoadTxt);
             this.Controls.Add(this.DataPointsChart);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -191,6 +203,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.DataVisualization.Charting.Chart DataPointsChart;
+        private System.Windows.Forms.Button LoadTxt;
     }
 }
 
