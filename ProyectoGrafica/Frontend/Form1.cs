@@ -15,7 +15,7 @@ using System.Windows.Forms.VisualStyles;
 using Graficas.Models;
 using Graficas.Services;
 using Newtonsoft.Json;
-
+using ProyectoGrafica.Models;
 
 namespace Frontend
 {
@@ -27,6 +27,8 @@ namespace Frontend
         float x;
         float y;
         float z;
+        string formula;
+
 
         int index = -1;
 
@@ -38,20 +40,22 @@ namespace Frontend
         private async Task POST(GraphicsData data)
         {
 
-            var newGraphic = new GraphicsData();
+            var newGraphic = new GraphicsDataRequest();
 
             if (data == null)
             {
                 newGraphic.x = x;
                 newGraphic.y = y;
-                newGraphic.z = z;
+                newGraphic.forumla = formula;
             }
+            /*
             else
             {
                 newGraphic.x = data.x;
                 newGraphic.y = data.y;
-                newGraphic.z = data.z;
+                newGraphic.forumla = data.;
             }
+            */
 
             var newgraphicStr = JsonConvert.SerializeObject(newGraphic, Newtonsoft.Json.Formatting.Indented);
 
@@ -320,7 +324,10 @@ namespace Frontend
             int.TryParse(TextBoxIndex.Text, out index);
         }
 
-
+        private void FormulaTextBox_TextChanged(object sender, EventArgs e)
+        {
+            formula= FormulaTextBox.Text;
+        }
 
 
 
@@ -337,6 +344,7 @@ namespace Frontend
             ZTextBox.Text = "";
 
             TextBoxIndex.Text = "";
+            FormulaTextBox.Text ="";
             index = -1;
         }
 
@@ -421,5 +429,7 @@ namespace Frontend
             }
             return tempValue;
         }
+
+        
     }
 }

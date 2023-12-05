@@ -43,14 +43,17 @@
             this.label3 = new System.Windows.Forms.Label();
             this.DataPointsChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.LoadTxt = new System.Windows.Forms.Button();
+            this.FormulaTextBox = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.DataPointsChart)).BeginInit();
             this.SuspendLayout();
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(15, 221);
+            this.button1.Location = new System.Drawing.Point(110, 329);
+            this.button1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.Size = new System.Drawing.Size(100, 28);
             this.button1.TabIndex = 0;
             this.button1.Text = "Send";
             this.button1.UseVisualStyleBackColor = true;
@@ -58,25 +61,28 @@
             // 
             // XTextBox
             // 
-            this.XTextBox.Location = new System.Drawing.Point(38, 86);
+            this.XTextBox.Location = new System.Drawing.Point(51, 106);
+            this.XTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.XTextBox.Name = "XTextBox";
-            this.XTextBox.Size = new System.Drawing.Size(100, 20);
+            this.XTextBox.Size = new System.Drawing.Size(132, 22);
             this.XTextBox.TabIndex = 1;
             this.XTextBox.TextChanged += new System.EventHandler(this.XTextBox_TextChanged);
             // 
             // YTextBox
             // 
-            this.YTextBox.Location = new System.Drawing.Point(38, 125);
+            this.YTextBox.Location = new System.Drawing.Point(51, 154);
+            this.YTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.YTextBox.Name = "YTextBox";
-            this.YTextBox.Size = new System.Drawing.Size(100, 20);
+            this.YTextBox.Size = new System.Drawing.Size(132, 22);
             this.YTextBox.TabIndex = 2;
             this.YTextBox.TextChanged += new System.EventHandler(this.YTextBox_TextChanged);
             // 
             // ZTextBox
             // 
-            this.ZTextBox.Location = new System.Drawing.Point(38, 166);
+            this.ZTextBox.Location = new System.Drawing.Point(51, 204);
+            this.ZTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.ZTextBox.Name = "ZTextBox";
-            this.ZTextBox.Size = new System.Drawing.Size(100, 20);
+            this.ZTextBox.Size = new System.Drawing.Size(132, 22);
             this.ZTextBox.TabIndex = 3;
             this.ZTextBox.TextChanged += new System.EventHandler(this.ZTextBox_TextChanged);
             // 
@@ -87,52 +93,58 @@
             "POST",
             "PUT",
             "DELETE"});
-            this.DropDownBox.Location = new System.Drawing.Point(17, 12);
+            this.DropDownBox.Location = new System.Drawing.Point(23, 15);
+            this.DropDownBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.DropDownBox.Name = "DropDownBox";
-            this.DropDownBox.Size = new System.Drawing.Size(121, 21);
+            this.DropDownBox.Size = new System.Drawing.Size(160, 24);
             this.DropDownBox.TabIndex = 5;
             // 
             // TextBoxIndex
             // 
-            this.TextBoxIndex.Location = new System.Drawing.Point(38, 49);
+            this.TextBoxIndex.Location = new System.Drawing.Point(51, 60);
+            this.TextBoxIndex.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.TextBoxIndex.Name = "TextBoxIndex";
-            this.TextBoxIndex.Size = new System.Drawing.Size(100, 20);
+            this.TextBoxIndex.Size = new System.Drawing.Size(132, 22);
             this.TextBoxIndex.TabIndex = 6;
             this.TextBoxIndex.TextChanged += new System.EventHandler(this.TextBoxIndex_TextChanged);
             // 
             // Index
             // 
             this.Index.AutoSize = true;
-            this.Index.Location = new System.Drawing.Point(-1, 52);
+            this.Index.Location = new System.Drawing.Point(-1, 64);
+            this.Index.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Index.Name = "Index";
-            this.Index.Size = new System.Drawing.Size(33, 13);
+            this.Index.Size = new System.Drawing.Size(39, 16);
             this.Index.TabIndex = 7;
             this.Index.Text = "Index";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 89);
+            this.label1.Location = new System.Drawing.Point(16, 110);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(14, 13);
+            this.label1.Size = new System.Drawing.Size(15, 16);
             this.label1.TabIndex = 8;
             this.label1.Text = "X";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 128);
+            this.label2.Location = new System.Drawing.Point(16, 158);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(14, 13);
+            this.label2.Size = new System.Drawing.Size(16, 16);
             this.label2.TabIndex = 9;
             this.label2.Text = "Y";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 169);
+            this.label3.Location = new System.Drawing.Point(16, 208);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(14, 13);
+            this.label3.Size = new System.Drawing.Size(15, 16);
             this.label3.TabIndex = 10;
             this.label3.Text = "Z";
             // 
@@ -142,33 +154,54 @@
             this.DataPointsChart.ChartAreas.Add(chartArea1);
             legend1.Name = "Legend1";
             this.DataPointsChart.Legends.Add(legend1);
-            this.DataPointsChart.Location = new System.Drawing.Point(163, 12);
+            this.DataPointsChart.Location = new System.Drawing.Point(250, 15);
+            this.DataPointsChart.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.DataPointsChart.Name = "DataPointsChart";
             series1.ChartArea = "ChartArea1";
             series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
             series1.Legend = "Legend1";
             series1.Name = "Data Points";
             this.DataPointsChart.Series.Add(series1);
-            this.DataPointsChart.Size = new System.Drawing.Size(398, 232);
+            this.DataPointsChart.Size = new System.Drawing.Size(624, 383);
             this.DataPointsChart.TabIndex = 11;
             this.DataPointsChart.Text = "DataPointsCharts";
             this.DataPointsChart.Click += new System.EventHandler(this.chart1_Click);
             // 
             // LoadTxt
             // 
-            this.LoadTxt.Location = new System.Drawing.Point(15, 192);
+            this.LoadTxt.Location = new System.Drawing.Point(2, 329);
+            this.LoadTxt.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.LoadTxt.Name = "LoadTxt";
-            this.LoadTxt.Size = new System.Drawing.Size(75, 23);
+            this.LoadTxt.Size = new System.Drawing.Size(100, 28);
             this.LoadTxt.TabIndex = 12;
             this.LoadTxt.Text = "Load Data";
             this.LoadTxt.UseVisualStyleBackColor = true;
             this.LoadTxt.Click += new System.EventHandler(this.LoadTxt_Click);
             // 
+            // FormulaTextBox
+            // 
+            this.FormulaTextBox.Location = new System.Drawing.Point(12, 278);
+            this.FormulaTextBox.Name = "FormulaTextBox";
+            this.FormulaTextBox.Size = new System.Drawing.Size(198, 22);
+            this.FormulaTextBox.TabIndex = 13;
+            this.FormulaTextBox.TextChanged += new System.EventHandler(this.FormulaTextBox_TextChanged);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(12, 259);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(56, 16);
+            this.label4.TabIndex = 14;
+            this.label4.Text = "Formula";
+            // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(572, 265);
+            this.ClientSize = new System.Drawing.Size(878, 406);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.FormulaTextBox);
             this.Controls.Add(this.LoadTxt);
             this.Controls.Add(this.DataPointsChart);
             this.Controls.Add(this.label3);
@@ -181,6 +214,7 @@
             this.Controls.Add(this.YTextBox);
             this.Controls.Add(this.XTextBox);
             this.Controls.Add(this.button1);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -204,6 +238,8 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.DataVisualization.Charting.Chart DataPointsChart;
         private System.Windows.Forms.Button LoadTxt;
+        private System.Windows.Forms.TextBox FormulaTextBox;
+        private System.Windows.Forms.Label label4;
     }
 }
 

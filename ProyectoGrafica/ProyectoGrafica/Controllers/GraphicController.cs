@@ -6,7 +6,7 @@ using Graficas.Models;
 using Graficas.Services;
 using System.Net.Http;
 using System.Web.Http;
-
+using ProyectoGrafica.Models;
 
 namespace Graficas.Controllers
 {
@@ -24,7 +24,7 @@ namespace Graficas.Controllers
             return _GraphicDataRepository.GetAllGraphicPoints();
         }
 
-        public bool Post([FromBody]GraphicsData data)
+        public bool Post([FromBody] GraphicsDataRequest data)
         {
             return _GraphicDataRepository.SaveDataPoint(data);
         }

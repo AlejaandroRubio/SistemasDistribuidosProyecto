@@ -1,5 +1,6 @@
 ﻿using Graficas.Models;
 using Microsoft.SqlServer.Server;
+using ProyectoGrafica.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,7 +15,8 @@ namespace Graficas.Services
     public class GraphicDataRepository
     {
         private const string CacheKey = "GraphicsKey";
-        string path = "C:\\Program Files\\SistemasDistribuidosProyecto\\ProyectoGrafica\\ProyectoGrafica\\Archivos_Compartidos\\Global.txt";
+        //string path = "C:\\Program Files\\SistemasDistribuidosProyecto\\ProyectoGrafica\\ProyectoGrafica\\Archivos_Compartidos\\Global.txt";
+        string path = "C:\\Users\\caoal_7ce87t7\\SistemasDistribuidosProyecto\\ProyectoGrafica\\ProyectoGrafica\\Archivos_Compartidos\\Global.txt";
 
 
         public GraphicDataRepository()
@@ -34,8 +36,10 @@ namespace Graficas.Services
         }
 
 
-        public bool SaveDataPoint(GraphicsData data)
+        public bool SaveDataPoint(GraphicsDataRequest data)
         {
+
+            GraphicsData graphicsData = TransformGraphicsData(data);
             var ctx = HttpContext.Current;
 
             if (ctx != null)
@@ -49,7 +53,7 @@ namespace Graficas.Services
                         currentData = new GraphicsData[0];
                     
                     var dataList = currentData.ToList();
-                    dataList.Add(data);
+                    dataList.Add(graphicsData);
                     ctx.Cache[CacheKey] = dataList.ToArray();
 
                     // Escribir al TXT Global
@@ -205,6 +209,34 @@ namespace Graficas.Services
             return tempValue;
         }
 
+        public GraphicsData TransformGraphicsData(GraphicsDataRequest requestData) {
 
+            try
+            {
+                // Realiza la transformación de GraphicsDataRequest a GraphicsData
+                var transformedData = new GraphicsData
+                {
+                    x = requestData.x,
+                    y = requestData.y,
+                    z = PerformTransformation(requestData)
+                };
+
+                // Devuelve los datos transformados
+                return transformedData;
+            }
+            catch (Exception ex)
+            {
+                return null;
+               // Error
+            }
+
+        }
+
+        private float PerformTransformation(GraphicsDataRequest requestData) {
+
+            //Aqui va la formula
+            return requestData.x + requestData.y;
+        
+        }
     }
 }
