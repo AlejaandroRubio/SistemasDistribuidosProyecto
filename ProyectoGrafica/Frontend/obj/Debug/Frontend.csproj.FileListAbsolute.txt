@@ -134,10 +134,12 @@ C:\Users\caoal_7ce87t7\SistemasDistribuidosProyecto\ProyectoGrafica\Frontend\bin
 C:\Users\caoal_7ce87t7\SistemasDistribuidosProyecto\ProyectoGrafica\Frontend\bin\Debug\es\System.Web.Razor.resources.dll
 C:\Users\caoal_7ce87t7\SistemasDistribuidosProyecto\ProyectoGrafica\Frontend\bin\Debug\es\System.Web.WebPages.Deployment.resources.dll
 C:\Users\caoal_7ce87t7\SistemasDistribuidosProyecto\ProyectoGrafica\Frontend\obj\Debug\Frontend.csproj.AssemblyReference.cache
-C:\Users\caoal_7ce87t7\SistemasDistribuidosProyecto\ProyectoGrafica\Frontend\obj\Debug\Frontend.Form1.resources
 C:\Users\caoal_7ce87t7\SistemasDistribuidosProyecto\ProyectoGrafica\Frontend\obj\Debug\Frontend.Properties.Resources.resources
 C:\Users\caoal_7ce87t7\SistemasDistribuidosProyecto\ProyectoGrafica\Frontend\obj\Debug\Frontend.csproj.GenerateResource.cache
 C:\Users\caoal_7ce87t7\SistemasDistribuidosProyecto\ProyectoGrafica\Frontend\obj\Debug\Frontend.csproj.CoreCompileInputs.cache
 C:\Users\caoal_7ce87t7\SistemasDistribuidosProyecto\ProyectoGrafica\Frontend\obj\Debug\Frontend.csproj.CopyComplete
 C:\Users\caoal_7ce87t7\SistemasDistribuidosProyecto\ProyectoGrafica\Frontend\obj\Debug\Frontend.exe
 C:\Users\caoal_7ce87t7\SistemasDistribuidosProyecto\ProyectoGrafica\Frontend\obj\Debug\Frontend.pdb
+C:\Users\caoal_7ce87t7\SistemasDistribuidosProyecto\ProyectoGrafica\Frontend\obj\Debug\Frontend.VentanaIncio.resources
+C:\Users\caoal_7ce87t7\SistemasDistribuidosProyecto\ProyectoGrafica\Frontend\obj\Debug\Frontend.Graficos3D.resources
+C:\Users\caoal_7ce87t7\SistemasDistribuidosProyecto\ProyectoGrafica\Frontend\obj\Debug\Frontend.Graficos2D.resources

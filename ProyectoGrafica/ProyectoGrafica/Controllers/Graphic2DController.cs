@@ -1,43 +1,45 @@
-﻿using System;
+﻿using Graficas.Models;
+using Graficas.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using Graficas.Models;
-using Graficas.Services;
 using System.Net.Http;
 using System.Web.Http;
-using Graficas.Models;
+using Graficas.Services;
 
-namespace Graficas.Controllers
+namespace ProyectoGrafica.Controllers
 {
-    public class GraphicController : ApiController
+    public class Graphic2DController : ApiController
     {
-        static GraphicDataRepository _GraphicDataRepository;
 
-        public GraphicController() 
+        static GraphicData2DRepository _GraphicDataRepository;
+
+        public Graphic2DController()
         {
-            _GraphicDataRepository = new GraphicDataRepository();
+            _GraphicDataRepository = new GraphicData2DRepository();
         }
-        
-        public GraphicsData[] Get()
+
+        public GraphicData2D[] Get()
         {
             return _GraphicDataRepository.GetAllGraphicPoints();
         }
 
-        public bool Post([FromBody] GraphicsDataRequest data)
+        public bool Post([FromBody] GraphicData2D data)
         {
             return _GraphicDataRepository.SaveDataPoint(data);
         }
 
-    
-        public bool Put(int id, [FromBody] GraphicsData data)
+
+        public bool Put(int id, [FromBody] GraphicData2D data)
         {
            return _GraphicDataRepository.PutData(id, data);
         }
-       
+
         public bool Delete(int id)
         {
             return _GraphicDataRepository.DeleteData(id);
         }
+
     }
 }

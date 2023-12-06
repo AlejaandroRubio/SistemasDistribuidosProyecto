@@ -1,6 +1,6 @@
 ﻿namespace Frontend
 {
-    partial class Form1
+    partial class Graficos3D
     {
         /// <summary>
         /// Variable del diseñador necesaria.

@@ -1,4 +1,9 @@
 {
-  "ExpandedNodes": [],
+  "ExpandedNodes": [
+    "",
+    "\\ProyectoGrafica",
+    "\\ProyectoGrafica\\Frontend"
+  ],
+  "SelectedNode": "\\ProyectoGrafica\\Frontend\\Program.cs",
   "PreviewInSolutionExplorer": false
 }

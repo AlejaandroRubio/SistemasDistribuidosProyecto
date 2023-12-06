@@ -5,12 +5,9 @@ using System.Web;
 
 namespace Graficas.Models
 {
-    public class GraphicsDataRequest
+    public class GraphicData2D
     {
-
         public float x { get; set; }
         public float y { get; set; }
-        public string forumla { get; set; }
-
     }
 }

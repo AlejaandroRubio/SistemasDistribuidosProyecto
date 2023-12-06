@@ -15,14 +15,15 @@ using System.Windows.Forms.VisualStyles;
 using Graficas.Models;
 using Graficas.Services;
 using Newtonsoft.Json;
-using ProyectoGrafica.Models;
+using Graficas.Models;
 
 namespace Frontend
 {
-    public partial class Form1 : Form
+    public partial class Graficos3D : Form
     {
 
-        string path = "C:\\Program Files\\SistemasDistribuidosProyecto\\ProyectoGrafica\\Frontend\\DEBUGArchivosLocales\\Local.txt";
+        //string path = "C:\\Program Files\\SistemasDistribuidosProyecto\\ProyectoGrafica\\Frontend\\DEBUGArchivosLocales\\Local.txt";
+        string path = "C:\\Users\\caoal_7ce87t7\\SistemasDistribuidosProyecto\\ProyectoGrafica\\Frontend\\DEBUGArchivosLocales\\Local.txt";
 
         float x;
         float y;
@@ -32,7 +33,7 @@ namespace Frontend
 
         int index = -1;
 
-        public Form1()
+        public Graficos3D()
         {
             InitializeComponent();
         }
@@ -61,7 +62,7 @@ namespace Frontend
 
             var client = new HttpClient();
 
-            var request = new HttpRequestMessage(HttpMethod.Post, "https://localhost:44366/api/Graphic");
+            var request = new HttpRequestMessage(HttpMethod.Post, "https://localhost:44366/api/");
 
 
             var content = new StringContent(newgraphicStr, null, "application/json");

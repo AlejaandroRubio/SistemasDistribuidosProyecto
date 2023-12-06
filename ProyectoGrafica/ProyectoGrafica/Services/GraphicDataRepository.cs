@@ -1,6 +1,6 @@
 ﻿using Graficas.Models;
 using Microsoft.SqlServer.Server;
-using ProyectoGrafica.Models;
+using Graficas.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
