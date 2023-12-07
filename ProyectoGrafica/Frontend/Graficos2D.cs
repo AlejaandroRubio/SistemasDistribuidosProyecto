@@ -177,6 +177,8 @@ namespace Frontend
 
             UpdateChart(SanitazeString(graphicJson, action, index), action, index);
 
+            MessageBox.Show(graphicJson);
+
 
         }
         #endregion

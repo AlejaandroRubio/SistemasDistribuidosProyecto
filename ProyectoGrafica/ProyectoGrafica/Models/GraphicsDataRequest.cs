@@ -10,7 +10,7 @@ namespace Graficas.Models
 
         public float x { get; set; }
         public float y { get; set; }
-        public string forumla { get; set; }
+        public int forumla { get; set; }
 
     }
 }

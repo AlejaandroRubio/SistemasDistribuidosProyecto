@@ -114,7 +114,7 @@ namespace Graficas.Services
         {
             // Leer todas las líneas del archivo
             string[] lines = File.ReadAllLines(path);
-            string dataModificada = "x:/" + value.x + ", y:/" + value.y;
+            string dataModificada = "x:/" + value.x + "; y:/" + value.y;
             // Modificar la línea deseada (supongamos que quieres cambiarla por "Nueva línea")
             lines[id + 1] = dataModificada;
             // Sobrescribir el archivo con las líneas modificadas
@@ -163,24 +163,43 @@ namespace Graficas.Services
         string GetNumbersFromJson(ref char[] tJs, int i)
         {
             string tempValue = "";
-            int j = 0;
-            /* Idenitificar X, Y, Z para conseguir el numero asignado a cada una */
-            j = i + 3;
-            while (true)
+            int j = i + 3;
+            bool isNegative = false;
+
+            while (j < tJs.Length)
             {
-                if (tJs[j] == 46)
+                if (char.IsDigit(tJs[j]) || tJs[j] == '-' || tJs[j] == ',')
+                {
+                    if (tJs[j] == '-')
+                    {
+                        // Marcar como negativo y omitir el carácter '-'
+                        isNegative = true;
+                    }
+                    else
+                    {
+                        tempValue += tJs[j];
+                    }
+                }
+                else if (tJs[j] == '.')
+                {
+                    // Reemplazar punto por coma para decimales
                     tempValue += ",";
-                else
-                    tempValue += tJs[j];
-
-                if (j < tJs.Length - 1)
-                    j++;
-                else
+                }
+                else if (tJs[j] == ';' || tJs[j] == '}')
+                {
+                    // Salir del bucle al encontrar coma o llave de cierre
                     break;
+                }
 
-                if (tJs[j] == 44 || tJs[j] == 125)
-                    break;
+                j++;
             }
+
+            // Agregar el signo negativo si es necesario
+            if (isNegative)
+            {
+                tempValue = "-" + tempValue;
+            }
+
             return tempValue;
         }
         #endregion
@@ -193,7 +212,7 @@ namespace Graficas.Services
 
             using (StreamWriter sw = File.AppendText(path))
             {
-                sw.WriteLine("x:/" + data.x + ", y:/" + data.y);
+                sw.WriteLine("x:/" + data.x + "; y:/" + data.y);
             }
         }
 

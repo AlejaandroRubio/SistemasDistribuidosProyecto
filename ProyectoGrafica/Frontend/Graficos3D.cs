@@ -28,7 +28,6 @@ namespace Frontend
         float x;
         float y;
         float z;
-        string formula;
 
 
         int index = -1;
@@ -42,6 +41,9 @@ namespace Frontend
         {
 
             var newGraphic = new GraphicsDataRequest();
+
+            int formula = FormulaDropDown();
+
 
             if (data == null)
             {
@@ -62,7 +64,7 @@ namespace Frontend
 
             var client = new HttpClient();
 
-            var request = new HttpRequestMessage(HttpMethod.Post, "https://localhost:44366/api/");
+            var request = new HttpRequestMessage(HttpMethod.Post, "https://localhost:44366/api/Graphic");
 
 
             var content = new StringContent(newgraphicStr, null, "application/json");
@@ -81,13 +83,32 @@ namespace Frontend
             DefaultValues();
         }
 
+        private int FormulaDropDown()
+        {
+
+            switch (DropDownBoxFormula.SelectedIndex)
+            {
+                case 0:
+                    return 1;// "x^2 * y/2)"
+                case 1:
+                    return 2;// "Sin(x) + Cos(y)",
+                case 2:
+                    return 3;// "sqrt(x^2+y^2)",
+                case 3:
+                    return 4;//"X^2 + y^3 * x + y^5"
+
+
+            }
+            return 0;
+        }
+
         private async void PUT()
         {
 
-            var putGraphic = new GraphicsData();
+            var putGraphic = new GraphicsDataRequest();
             putGraphic.x = x;
             putGraphic.y = y;
-            putGraphic.z = z;
+            putGraphic.forumla = FormulaDropDown();
 
             var putGraphicStr = JsonConvert.SerializeObject(putGraphic, Newtonsoft.Json.Formatting.Indented);
 
@@ -147,9 +168,6 @@ namespace Frontend
 
         void UpdateChart(GraphicsData dataPoint, Action action, int index)
         {
-            /* Para el  3d utilizar Z
-             * Para el 2D definir Z como "null"
-             */
             switch(action)
             {
                 case Action.post:
@@ -168,6 +186,7 @@ namespace Frontend
 
             DataPointsChart.Invalidate();
         }
+
 
 
         private async void PostButton(object sender, EventArgs e)
@@ -199,9 +218,10 @@ namespace Frontend
             response.EnsureSuccessStatusCode();
             var graphicJson = await response.Content.ReadAsStringAsync();
 
-            UpdateChart(SanitazeString(graphicJson, action, index), action, index);
 
-            // MessageBox.Show(graphicJson);   
+            //UpdateChart(SanitazeString(graphicJson, action, index), action, index);
+
+            MessageBox.Show(graphicJson);   
         }
 
         /*
@@ -310,10 +330,6 @@ namespace Frontend
             float.TryParse(YTextBox.Text, out y);
         }
 
-        private void ZTextBox_TextChanged(object sender, EventArgs e)
-        {
-            float.TryParse(ZTextBox.Text, out z);
-        }
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -327,7 +343,7 @@ namespace Frontend
 
         private void FormulaTextBox_TextChanged(object sender, EventArgs e)
         {
-            formula= FormulaTextBox.Text;
+            //formula= FormulaTextBox.Text;
         }
 
 
@@ -342,10 +358,7 @@ namespace Frontend
         {
             XTextBox.Text = "";
             YTextBox.Text = "";
-            ZTextBox.Text = "";
-
             TextBoxIndex.Text = "";
-            FormulaTextBox.Text ="";
             index = -1;
         }
 

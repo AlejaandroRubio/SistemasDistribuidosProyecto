@@ -75,11 +75,12 @@ namespace Graficas.Services
         /* Value es la lista de puntos completa */
         /* ID = posicion en la lista */
 
-        public bool PutData(int id, GraphicsData value)
+        public bool PutData(int id, GraphicsDataRequest value)
         {       
                 // Leer todas las líneas del archivo
                 string[] lines = File.ReadAllLines(path);
-                string dataModificada= "x:/" + value.x + ", y:/" + value.y + ", z:/" + value.z;
+                float Z = PerformTransformation(value);
+                string dataModificada= "x:/" + value.x + "; y:/" + value.y + "; z:/" + Z;
                 // Modificar la línea deseada (supongamos que quieres cambiarla por "Nueva línea")
                 lines[id + 1] = dataModificada;
                 // Sobrescribir el archivo con las líneas modificadas
@@ -137,7 +138,7 @@ namespace Graficas.Services
 
             using (StreamWriter sw = File.AppendText(path))
             { 
-                sw.WriteLine("x:/" + data.x + ", y:/" + data.y + ", z:/" + data.z);
+                sw.WriteLine("x:/" + data.x + "; y:/" + data.y + "; z:/" + data.z);
             }
         }
 
@@ -188,26 +189,47 @@ namespace Graficas.Services
         string GetNumbersFromJson(ref char[] tJs, int i)
         {
             string tempValue = "";
-            int j = 0;
-            /* Idenitificar X, Y, Z para conseguir el numero asignado a cada una */
-            j = i + 3;
-            while (true)
+            int j = i + 3;
+            bool isNegative = false;
+
+            while (j < tJs.Length)
             {
-                if (tJs[j] == 46)
+                if (char.IsDigit(tJs[j]) || tJs[j] == '-' || tJs[j] == ',')
+                {
+                    if (tJs[j] == '-')
+                    {
+                        // Marcar como negativo y omitir el carácter '-'
+                        isNegative = true;
+                    }
+                    else
+                    {
+                        tempValue += tJs[j];
+                    }
+                }
+                else if (tJs[j] == '.')
+                {
+                    // Reemplazar punto por coma para decimales
                     tempValue += ",";
-                else
-                    tempValue += tJs[j];
-
-                if (j < tJs.Length - 1)
-                    j++;
-                else
+                }
+                else if (tJs[j] == ';' || tJs[j] == '}')
+                {
+                    // Salir del bucle al encontrar coma o llave de cierre
                     break;
+                }
 
-                if (tJs[j] == 44 || tJs[j] == 125)
-                    break;
+                j++;
             }
+
+            // Agregar el signo negativo si es necesario
+            if (isNegative)
+            {
+                tempValue = "-" + tempValue;
+            }
+
             return tempValue;
         }
+
+
 
         public GraphicsData TransformGraphicsData(GraphicsDataRequest requestData) {
 
@@ -232,11 +254,30 @@ namespace Graficas.Services
 
         }
 
-        private float PerformTransformation(GraphicsDataRequest requestData) {
+        private float PerformTransformation(GraphicsDataRequest requestData)
+        {
+            /*
+            "x^2 * y/2)",
+            "Sin(x) + Cos(y)",
+            "sqrt(x^2+y^2)",
+            "X^2 + y^3 * x + y^5"
+             */
 
-            //Aqui va la formula
-            return requestData.x + requestData.y;
-        
+            switch (requestData.forumla)
+            {
+                case 0: return 0;
+                case 1: { return (float)Math.Pow(requestData.x, 2) + requestData.y/2; } //x^2 * y/2
+                case 2: { return (float)(Math.Sin(requestData.x) + Math.Cos(requestData.y)); } //Sin(x) + Cos(y)
+                case 3: { return (float)Math.Sqrt((float)Math.Pow(requestData.x, 2) + (float)Math.Pow(requestData.y, 2)); } //sqrt(x^2+y^2)
+                case 4: { return (float)(Math.Pow(requestData.x, 2) + Math.Pow(requestData.y, 3) * requestData.x + Math.Pow(requestData.y, 5)); }
+            }
+
+            return 0;
+
+
+
         }
+
+
     }
 }

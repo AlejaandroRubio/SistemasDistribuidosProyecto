@@ -30,7 +30,7 @@ namespace Graficas.Controllers
         }
 
     
-        public bool Put(int id, [FromBody] GraphicsData data)
+        public bool Put(int id, [FromBody] GraphicsDataRequest data)
         {
            return _GraphicDataRepository.PutData(id, data);
         }
