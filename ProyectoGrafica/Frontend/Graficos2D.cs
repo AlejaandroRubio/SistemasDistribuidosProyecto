@@ -177,7 +177,7 @@ namespace Frontend
 
             UpdateChart(SanitazeString(graphicJson, action, index), action, index);
 
-            MessageBox.Show(graphicJson);
+            //MessageBox.Show(graphicJson);
 
 
         }
@@ -332,34 +332,53 @@ namespace Frontend
         #endregion
 
         string GetNumbersFromJson(ref char[] tJs, int i)
+        {
+            string tempValue = "";
+            int j = i + 3;
+            bool isNegative = false;
+
+            while (j < tJs.Length)
             {
-                string tempValue = "";
-                int j = 0;
-                /* Idenitificar X, Y para conseguir el numero asignado a cada una */
-                j = i + 3;
-                while (true)
+                if (char.IsDigit(tJs[j]) || tJs[j] == '-' || tJs[j] == ',')
                 {
-                    if (tJs[j] == 46)
-                        tempValue += ",";
+                    if (tJs[j] == '-')
+                    {
+                        // Marcar como negativo y omitir el carácter '-'
+                        isNegative = true;
+                    }
                     else
+                    {
                         tempValue += tJs[j];
-
-                    if (j < tJs.Length - 1)
-                        j++;
-                    else
-                        break;
-
-                    if (tJs[j] == 44 || tJs[j] == 125)
-                        break;
+                    }
                 }
-                return tempValue;
+                else if (tJs[j] == '.')
+                {
+                    // Reemplazar punto por coma para decimales
+                    tempValue += ",";
+                }
+                else if (tJs[j] == ';' || tJs[j] == '}')
+                {
+                    // Salir del bucle al encontrar coma o llave de cierre
+                    break;
+                }
+
+                j++;
             }
 
+            // Agregar el signo negativo si es necesario
+            if (isNegative)
+            {
+                tempValue = "-" + tempValue;
+            }
+
+            return tempValue;
+        }
 
 
-            #region Datos
 
-            private void TextBoxIndex_TextChanged(object sender, EventArgs e)
+        #region Datos
+
+        private void TextBoxIndex_TextChanged(object sender, EventArgs e)
         {
             int.TryParse(TextBoxIndex.Text, out index);
         }

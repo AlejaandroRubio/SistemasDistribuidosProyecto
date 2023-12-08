@@ -37,7 +37,7 @@ namespace Frontend
             InitializeComponent();
         }
 
-        private async Task POST(GraphicsData data)
+        private async Task POST(GraphicsDataRequest data)
         {
 
             var newGraphic = new GraphicsDataRequest();
@@ -51,14 +51,14 @@ namespace Frontend
                 newGraphic.y = y;
                 newGraphic.forumla = formula;
             }
-            /*
+            
             else
             {
                 newGraphic.x = data.x;
                 newGraphic.y = data.y;
-                newGraphic.forumla = data.;
+                newGraphic.forumla = data.forumla;
             }
-            */
+
 
             var newgraphicStr = JsonConvert.SerializeObject(newGraphic, Newtonsoft.Json.Formatting.Indented);
 
@@ -382,13 +382,13 @@ namespace Frontend
 
             float sanitizedX = 0;
             float sanitizedY = 0;
-            float sanitizedZ = 0;
+            int sanitizedF = 0;
 
             char[] tempCharArr = { };
 
             for (int i = 0; i < tJs.Length; i++)
             {
-                GraphicsData tempData = new GraphicsData();
+                GraphicsDataRequest tempData = new GraphicsDataRequest();
 
                 tempCharArr = tJs[i].ToCharArray();
 
@@ -406,10 +406,10 @@ namespace Frontend
                         tempData.y = sanitizedY;
                     }
 
-                    if (tempCharArr[j] == 122) // 120 = z
+                    if (tempCharArr[j] == 102) // 120 = f
                     {
-                        float.TryParse(GetNumbersFromJson(ref tempCharArr, j), out sanitizedZ);
-                        tempData.z = sanitizedZ;
+                        int.TryParse(GetNumbersFromJson(ref tempCharArr, j), out sanitizedF);
+                        tempData.forumla = sanitizedF;
 
                         await Task.Delay(2);
                         await POST(tempData);
@@ -423,27 +423,46 @@ namespace Frontend
         string GetNumbersFromJson(ref char[] tJs, int i)
         {
             string tempValue = "";
-            int j = 0;
-            /* Idenitificar X, Y, Z para conseguir el numero asignado a cada una */
-            j = i + 3;
-            while (true)
+            int j = i + 3;
+            bool isNegative = false;
+
+            while (j < tJs.Length)
             {
-                if (tJs[j] == 46)
+                if (char.IsDigit(tJs[j]) || tJs[j] == '-' || tJs[j] == ',')
+                {
+                    if (tJs[j] == '-')
+                    {
+                        // Marcar como negativo y omitir el carácter '-'
+                        isNegative = true;
+                    }
+                    else
+                    {
+                        tempValue += tJs[j];
+                    }
+                }
+                else if (tJs[j] == '.')
+                {
+                    // Reemplazar punto por coma para decimales
                     tempValue += ",";
-                else
-                    tempValue += tJs[j];
-
-                if (j < tJs.Length - 1)
-                    j++;
-                else
+                }
+                else if (tJs[j] == ';' || tJs[j] == '}')
+                {
+                    // Salir del bucle al encontrar coma o llave de cierre
                     break;
+                }
 
-                if (tJs[j] == 44 || tJs[j] == 125)
-                    break;
+                j++;
             }
+
+            // Agregar el signo negativo si es necesario
+            if (isNegative)
+            {
+                tempValue = "-" + tempValue;
+            }
+
             return tempValue;
         }
 
-        
+
     }
 }
