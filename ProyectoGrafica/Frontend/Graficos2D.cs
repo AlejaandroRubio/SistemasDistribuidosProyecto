@@ -18,7 +18,10 @@ namespace Frontend
         }
 
         //string path = "C:\\Program Files\\SistemasDistribuidosProyecto\\ProyectoGrafica\\Frontend\\DEBUGArchivosLocales\\Local.txt";
-        string path = "C:\\Users\\diego\\Desktop\\SistemasDistribuidosProyecto-FormulasIdea\\ProyectoGrafica\\Frontend\\DEBUGArchivosLocales\\Local2D.txt";
+        //string path = "C:\\Users\\diego\\Desktop\\SistemasDistribuidosProyecto-FormulasIdea\\ProyectoGrafica\\Frontend\\DEBUGArchivosLocales\\Local2D.txt";
+
+        static string relativePath = "..\\..\\DEBUGArchivosLocales\\Local2D.txt";
+        string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, relativePath);
 
         float x;
         float y;
@@ -204,7 +207,7 @@ namespace Frontend
             else if (action == Action.put)
             {
                 #region PUT
-                int tempIndexX = index;
+                int tempIndexX = index +1;
                 bool inTheRightIndex = false;
 
                 for (int i = 0; i < json.Length; i++)
@@ -260,6 +263,7 @@ namespace Frontend
                     break;
                 case Action.put:
                     DataPointsChart.Series["Data Points"].Points[index].SetValueXY(dataPoint.x, dataPoint.y);
+                    MessageBox.Show(dataPoint.x. ToString() +  " " + dataPoint.y.ToString());
                     break;
                 case Action.delete:
                     if (index == -1)

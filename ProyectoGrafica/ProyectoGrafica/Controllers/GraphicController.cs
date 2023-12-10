@@ -24,15 +24,5 @@ namespace Graficas.Controllers
             return _GraphicDataRepository.SaveGeneratedMesh(data);
         }
 
-    
-        public bool Put(int id, [FromBody] GraphicsData data)
-        {
-            return false;
-        }
-       
-        public bool Delete(int id)
-        {
-            return false;
-        }
     }
 }

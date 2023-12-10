@@ -10,7 +10,10 @@ namespace Graficas.Services
     {
         private const string CacheKey = "GraphicsKey";
         //string path = "C:\\Program Files\\SistemasDistribuidosProyecto\\ProyectoGrafica\\ProyectoGrafica\\Archivos_Compartidos\\Global2D.txt";
-        string path = "C:\\Users\\diego\\Desktop\\SistemasDistribuidosProyecto-FormulasIdea\\ProyectoGrafica\\Frontend\\DEBUGArchivosLocales\\Global2D.txt";
+        //string path = "C:\\Users\\diego\\Desktop\\SistemasDistribuidosProyecto-FormulasIdea\\ProyectoGrafica\\Frontend\\DEBUGArchivosLocales\\Global2D.txt";
+
+        static string relativePath = "Archivos_Compartidos\\Global2D.txt";
+        string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, relativePath);
 
         public GraphicData2DRepository()
         {
@@ -126,6 +129,7 @@ namespace Graficas.Services
         {
             if (id != -1)
             {
+                id = id +1;
                 string[] lines = File.ReadAllLines(path);
                 // Índice de línea que deseas borrar
                 int lineIndexToDelete = id;

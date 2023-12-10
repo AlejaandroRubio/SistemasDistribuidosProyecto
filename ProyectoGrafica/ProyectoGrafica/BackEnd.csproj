@@ -180,7 +180,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\GraphicData2D.cs" />
-    <Compile Include="Models\GraphicsData.cs" />
     <Compile Include="Models\GraphicsDataRequest.cs" />
     <Compile Include="Models\OpenGLGeneratedMesh.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
