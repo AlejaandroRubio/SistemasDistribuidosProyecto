@@ -20,11 +20,13 @@ void main()
 {
 
     vec3 newPosition = aPosition;
-    if (stepB == 1){
+    if (stepB == 1)
+    {
      float displacement = amplitude * step(sin(time * frequency + aPosition.x), 0.0);
      newPosition.y += displacement;
     }
-    if (stepB==0){
+    if (stepB==0)
+    {
 
     float displacement = amplitude * sin(time * frequency + aPosition.x);
     newPosition.y += displacement;
