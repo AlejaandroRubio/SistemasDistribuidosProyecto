@@ -50,7 +50,10 @@ namespace Frontend.Renderer
 
         float amplitude;
         float frequency;
+        float step;
         bool animate;
+        bool stepbool;
+
 
 
         Camera camera;
@@ -290,10 +293,12 @@ namespace Frontend.Renderer
             
                 int amplitudeHandle = GL.GetUniformLocation(shaderProgramHandle, "amplitude");
                 int frequencyHandle = GL.GetUniformLocation(shaderProgramHandle, "frequency");
+                int stepHandle= GL.GetUniformLocation(shaderProgramHandle, "stepB");
 
                 GL.Uniform1(timeHandle, time);
                 GL.Uniform1(amplitudeHandle, amplitude);
                 GL.Uniform1(frequencyHandle, frequency);
+                GL.Uniform1(stepHandle, step);
             }
 
 
@@ -305,7 +310,7 @@ namespace Frontend.Renderer
 
         }
 
-        public void SetUpVerticesIndexAndTextures(List<Vector3> vertices, List<uint> indices, List<Vector2> textures, float amplitude, float frequency, bool animate)
+        public void SetUpVerticesIndexAndTextures(List<Vector3> vertices, List<uint> indices, List<Vector2> textures, float amplitude, float frequency, bool animate, bool step)
         {
             newVertices = vertices;
             newIndices = indices;
@@ -313,6 +318,16 @@ namespace Frontend.Renderer
             this.amplitude = amplitude;
             this.frequency = frequency;
             this.animate = animate;
+            this.stepbool = step;
+
+            if (stepbool)
+            {
+                this.step = 1;
+            }
+            else
+            {
+                this.step=0;
+            }
         }
     }
 }

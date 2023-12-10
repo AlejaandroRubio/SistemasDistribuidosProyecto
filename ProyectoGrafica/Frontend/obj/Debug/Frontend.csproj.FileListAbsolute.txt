@@ -141,7 +141,6 @@ C:\Users\caoal_7ce87t7\SistemasDistribuidosProyecto\ProyectoGrafica\Frontend\obj
 C:\Users\caoal_7ce87t7\SistemasDistribuidosProyecto\ProyectoGrafica\Frontend\obj\Debug\Frontend.exe
 C:\Users\caoal_7ce87t7\SistemasDistribuidosProyecto\ProyectoGrafica\Frontend\obj\Debug\Frontend.pdb
 C:\Users\caoal_7ce87t7\SistemasDistribuidosProyecto\ProyectoGrafica\Frontend\obj\Debug\Frontend.VentanaIncio.resources
-C:\Users\caoal_7ce87t7\SistemasDistribuidosProyecto\ProyectoGrafica\Frontend\obj\Debug\Frontend.Graficos3D.resources
 C:\Users\caoal_7ce87t7\SistemasDistribuidosProyecto\ProyectoGrafica\Frontend\obj\Debug\Frontend.Graficos2D.resources
 C:\Users\diego\Desktop\SistemasDistribuidosProyecto-FormulasIdea\ProyectoGrafica\Frontend\bin\Debug\Frontend.exe.config
 C:\Users\diego\Desktop\SistemasDistribuidosProyecto-FormulasIdea\ProyectoGrafica\Frontend\bin\Debug\Frontend.exe
@@ -267,3 +266,17 @@ C:\Users\caoal_7ce87t7\Downloads\SistemasDistribuidosProyecto-FormulasIdea\Proye
 C:\Users\caoal_7ce87t7\Downloads\SistemasDistribuidosProyecto-FormulasIdea\ProyectoGrafica\Frontend\obj\Debug\Frontend.csproj.CopyComplete
 C:\Users\caoal_7ce87t7\Downloads\SistemasDistribuidosProyecto-FormulasIdea\ProyectoGrafica\Frontend\obj\Debug\Frontend.exe
 C:\Users\caoal_7ce87t7\Downloads\SistemasDistribuidosProyecto-FormulasIdea\ProyectoGrafica\Frontend\obj\Debug\Frontend.pdb
+C:\Users\caoal_7ce87t7\SistemasDistribuidosProyecto\ProyectoGrafica\Frontend\bin\Debug\NCalc.dll
+C:\Users\caoal_7ce87t7\SistemasDistribuidosProyecto\ProyectoGrafica\Frontend\bin\Debug\OpenTK.dll
+C:\Users\caoal_7ce87t7\SistemasDistribuidosProyecto\ProyectoGrafica\Frontend\bin\Debug\OpenTK.GLControl.dll
+C:\Users\caoal_7ce87t7\SistemasDistribuidosProyecto\ProyectoGrafica\Frontend\bin\Debug\StbImageSharp.dll
+C:\Users\caoal_7ce87t7\SistemasDistribuidosProyecto\ProyectoGrafica\Frontend\bin\Debug\System.Linq.Dynamic.Core.dll
+C:\Users\caoal_7ce87t7\SistemasDistribuidosProyecto\ProyectoGrafica\Frontend\bin\Debug\Z.Expressions.Eval.dll
+C:\Users\caoal_7ce87t7\SistemasDistribuidosProyecto\ProyectoGrafica\Frontend\bin\Debug\OpenTK.pdb
+C:\Users\caoal_7ce87t7\SistemasDistribuidosProyecto\ProyectoGrafica\Frontend\bin\Debug\OpenTK.xml
+C:\Users\caoal_7ce87t7\SistemasDistribuidosProyecto\ProyectoGrafica\Frontend\bin\Debug\OpenTK.GLControl.pdb
+C:\Users\caoal_7ce87t7\SistemasDistribuidosProyecto\ProyectoGrafica\Frontend\bin\Debug\OpenTK.GLControl.xml
+C:\Users\caoal_7ce87t7\SistemasDistribuidosProyecto\ProyectoGrafica\Frontend\bin\Debug\System.Linq.Dynamic.Core.pdb
+C:\Users\caoal_7ce87t7\SistemasDistribuidosProyecto\ProyectoGrafica\Frontend\bin\Debug\System.Linq.Dynamic.Core.xml
+C:\Users\caoal_7ce87t7\SistemasDistribuidosProyecto\ProyectoGrafica\Frontend\bin\Debug\Z.Expressions.Eval.xml
+C:\Users\caoal_7ce87t7\SistemasDistribuidosProyecto\ProyectoGrafica\Frontend\obj\Debug\Frontend.Formulas3D.resources

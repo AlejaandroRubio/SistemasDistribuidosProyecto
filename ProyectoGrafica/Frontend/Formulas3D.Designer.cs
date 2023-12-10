@@ -44,6 +44,7 @@
             this.label8 = new System.Windows.Forms.Label();
             this.textBoxAmplitud = new System.Windows.Forms.TextBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // textBox1
@@ -153,7 +154,7 @@
             // 
             // textBoxFrecuencia
             // 
-            this.textBoxFrecuencia.Location = new System.Drawing.Point(10, 217);
+            this.textBoxFrecuencia.Location = new System.Drawing.Point(8, 220);
             this.textBoxFrecuencia.Name = "textBoxFrecuencia";
             this.textBoxFrecuencia.Size = new System.Drawing.Size(142, 22);
             this.textBoxFrecuencia.TabIndex = 10;
@@ -162,7 +163,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(9, 198);
+            this.label6.Location = new System.Drawing.Point(7, 201);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(74, 16);
             this.label6.TabIndex = 11;
@@ -171,7 +172,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(9, 192);
+            this.label7.Location = new System.Drawing.Point(7, 195);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(0, 16);
             this.label7.TabIndex = 12;
@@ -204,11 +205,23 @@
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
+            // checkBox2
+            // 
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Location = new System.Drawing.Point(241, 175);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(123, 20);
+            this.checkBox2.TabIndex = 16;
+            this.checkBox2.Text = "Animacion Step";
+            this.checkBox2.UseVisualStyleBackColor = true;
+            this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
+            // 
             // Formulas3D
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(393, 299);
+            this.Controls.Add(this.checkBox2);
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.textBoxAmplitud);
@@ -251,5 +264,6 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox textBoxAmplitud;
         private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox checkBox2;
     }
 }

@@ -29,6 +29,7 @@ namespace Frontend
         float amplitude;
         float frequency;
         bool animate;
+        bool step;
 
         public Formulas3D()
         {
@@ -252,7 +253,7 @@ namespace Frontend
             {
                 if (loadJustOnce)
                 {
-                    program.SetUpVerticesIndexAndTextures(reconstructedMesh.tempVertexList, reconstructedMesh.indices, reconstructedMesh.tempTexturesCoords , amplitude, frequency, animate);
+                    program.SetUpVerticesIndexAndTextures(reconstructedMesh.tempVertexList, reconstructedMesh.indices, reconstructedMesh.tempTexturesCoords , amplitude, frequency, animate, step);
                     loadJustOnce = false;
                 }
 
@@ -306,6 +307,11 @@ namespace Frontend
         {
             float.TryParse(textBoxFrecuencia.Text, out frequency);
 
+        }
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            step= checkBox2.Checked;
         }
     }
 }
