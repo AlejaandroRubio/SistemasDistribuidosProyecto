@@ -47,6 +47,7 @@ namespace Frontend
                     if (index != -1)
                     {
                         await Task.Run(() => PUT());
+                        await Task.Delay(1000);
                         await Task.Run(() => GET(ActionType.put, index));
                         DefaultValues();
                     }
@@ -178,7 +179,8 @@ namespace Frontend
             response.EnsureSuccessStatusCode();
             var graphicJson = await response.Content.ReadAsStringAsync();
 
-            await Task.Run(() => UpdateChart(SanitazeString(graphicJson, action, index), action, index));
+
+            UpdateChart(SanitazeString(graphicJson, action, index), action, index);
 
         }
         #endregion
@@ -282,7 +284,11 @@ namespace Frontend
                     break;
                 case ActionType.delete:
                     if (index == -1)
+                    {
                         DataPointsChart.Series["Data Points"].Points.Clear();
+                        MessageBox.Show("TODOS LOS DATOS BORRADOS CON EXITO");
+                    }
+                        
                     else
                         DataPointsChart.Series["Data Points"].Points.RemoveAt(index);
                     break;
@@ -386,8 +392,8 @@ namespace Frontend
         {
             XTextBox.Text = "";
             YTextBox.Text = "";
-            TextBoxIndex.Text = "";
-            index = -1;
+            //TextBoxIndex.Text = "";
+            //index = -1;
         }
         #endregion
 

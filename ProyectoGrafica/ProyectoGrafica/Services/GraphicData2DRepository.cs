@@ -113,7 +113,7 @@ namespace Graficas.Services
             string[] lines = File.ReadAllLines(path);
             string dataModificada = "x:/" + value.x + ", y:/" + value.y;
             // Modificar la línea deseada (supongamos que quieres cambiarla por "Nueva línea")
-            lines[id + 1] = dataModificada;
+            lines[id +1] = dataModificada;
             // Sobrescribir el archivo con las líneas modificadas
             File.WriteAllLines(path, lines);
 
