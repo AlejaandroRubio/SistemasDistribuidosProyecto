@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.DropDownBox = new System.Windows.Forms.ComboBox();
             this.DataPointsChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.label2 = new System.Windows.Forms.Label();
@@ -41,6 +41,7 @@
             this.XTextBox = new System.Windows.Forms.TextBox();
             this.LoadTxt = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
+            this.LoadSaveDataButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.DataPointsChart)).BeginInit();
             this.SuspendLayout();
             // 
@@ -59,19 +60,19 @@
             // 
             // DataPointsChart
             // 
-            chartArea4.Name = "ChartArea1";
-            this.DataPointsChart.ChartAreas.Add(chartArea4);
-            legend4.Name = "Legend1";
-            this.DataPointsChart.Legends.Add(legend4);
+            chartArea1.Name = "ChartArea1";
+            this.DataPointsChart.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.DataPointsChart.Legends.Add(legend1);
             this.DataPointsChart.Location = new System.Drawing.Point(218, 13);
             this.DataPointsChart.Margin = new System.Windows.Forms.Padding(4);
             this.DataPointsChart.Name = "DataPointsChart";
-            series4.ChartArea = "ChartArea1";
-            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series4.Legend = "Legend1";
-            series4.Name = "Data Points";
-            this.DataPointsChart.Series.Add(series4);
-            this.DataPointsChart.Size = new System.Drawing.Size(569, 317);
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series1.Legend = "Legend1";
+            series1.Name = "Data Points";
+            this.DataPointsChart.Series.Add(series1);
+            this.DataPointsChart.Size = new System.Drawing.Size(627, 343);
             this.DataPointsChart.TabIndex = 12;
             this.DataPointsChart.Text = "DataPointsCharts";
             // 
@@ -134,18 +135,18 @@
             // 
             // LoadTxt
             // 
-            this.LoadTxt.Location = new System.Drawing.Point(32, 205);
+            this.LoadTxt.Location = new System.Drawing.Point(11, 302);
             this.LoadTxt.Margin = new System.Windows.Forms.Padding(4);
             this.LoadTxt.Name = "LoadTxt";
-            this.LoadTxt.Size = new System.Drawing.Size(128, 38);
+            this.LoadTxt.Size = new System.Drawing.Size(94, 52);
             this.LoadTxt.TabIndex = 20;
-            this.LoadTxt.Text = "Load Data";
+            this.LoadTxt.Text = "Load Local Data";
             this.LoadTxt.UseVisualStyleBackColor = true;
             this.LoadTxt.Click += new System.EventHandler(this.LoadTxt_Click);
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(32, 271);
+            this.button1.Location = new System.Drawing.Point(60, 204);
             this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(128, 38);
@@ -154,11 +155,23 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.SendButton);
             // 
+            // LoadSaveDataButton
+            // 
+            this.LoadSaveDataButton.Location = new System.Drawing.Point(116, 302);
+            this.LoadSaveDataButton.Margin = new System.Windows.Forms.Padding(4);
+            this.LoadSaveDataButton.Name = "LoadSaveDataButton";
+            this.LoadSaveDataButton.Size = new System.Drawing.Size(94, 52);
+            this.LoadSaveDataButton.TabIndex = 21;
+            this.LoadSaveDataButton.Text = "Load Save Data";
+            this.LoadSaveDataButton.UseVisualStyleBackColor = true;
+            this.LoadSaveDataButton.Click += new System.EventHandler(this.LoadSaveDataButton_Click);
+            // 
             // Graficos2D
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 345);
+            this.ClientSize = new System.Drawing.Size(858, 367);
+            this.Controls.Add(this.LoadSaveDataButton);
             this.Controls.Add(this.LoadTxt);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label2);
@@ -189,5 +202,6 @@
         private System.Windows.Forms.TextBox XTextBox;
         private System.Windows.Forms.Button LoadTxt;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button LoadSaveDataButton;
     }
 }

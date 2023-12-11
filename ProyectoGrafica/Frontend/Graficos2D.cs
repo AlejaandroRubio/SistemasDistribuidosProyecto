@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
 using Graficas.Models;
 using Newtonsoft.Json;
 
@@ -14,6 +16,7 @@ namespace Frontend
         {
             InitializeComponent();
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            LoadSaveData();
 
         }
 
@@ -179,93 +182,15 @@ namespace Frontend
             response.EnsureSuccessStatusCode();
             var graphicJson = await response.Content.ReadAsStringAsync();
 
+            List<GraphicData2D> graphicList = JsonConvert.DeserializeObject<List<GraphicData2D>>(graphicJson);
 
-            UpdateChart(SanitazeString(graphicJson, action, index), action, index);
-
-        }
-        #endregion
-
-        #region SanatizeString
-
-        GraphicData2D SanitazeString(string json, ActionType action, int index)
-        {
-            GraphicData2D tempData = new GraphicData2D();
-            float sanitizedX = 0;
-            float sanitizedY = 0;
-
-            // Maximo 2410 Datos
-            char[] tJs = json.ToCharArray();
-
-
-            if (action == ActionType.post)
-            {
-                for (int i = json.Length - 1; i > 0; i--)
-                {
-        
-
-                    if (tJs[i] == 121) // 121 = y
-                    {
-                        float.TryParse(GetNumbersFromJson(ref tJs, i), out sanitizedY);
-                    }
-
-                    if (tJs[i] == 120) // 120 = x
-                    {
-                        float.TryParse(GetNumbersFromJson(ref tJs, i), out sanitizedX);
-                        goto exit;
-                    }
-                }
-            }
-            else if (action == ActionType.put)
-            {
-                #region PUT
-                int tempIndexX = index +1;
-                bool inTheRightIndex = false;
-
-                for (int i = 0; i < json.Length; i++)
-                {
-                    if (tJs[i] == 120 && tempIndexX <= 0) // 120 = x
-                    {
-                        float.TryParse(GetNumbersFromJson(ref tJs, i), out sanitizedX);
-                        inTheRightIndex = true;
-                    }
-
-                    if (tJs[i] == 121 && inTheRightIndex) // 121 = y
-                    {
-                        float.TryParse(GetNumbersFromJson(ref tJs, i), out sanitizedY);
-                        goto exit;
-                    }
-
-                    
-
-                    if (tempIndexX >= 0 && tJs[i] == 120) // 120 = x
-                        tempIndexX--;
-                }
-                #endregion
-            }
-            else if (action == ActionType.delete)
-            {
-
-            }
-
-
-        exit:
-            tempData.x = sanitizedX;
-            tempData.y = sanitizedY;
-
-
-            /* MessageBox.Show("TempData  " +
-                            " X = " + tempData.x +
-                            " Y = " + tempData.y +);
-
-            */
-            return tempData;
+            UpdateChart(graphicList, action, index);
 
         }
-
         #endregion
 
         #region UpdateChart
-        void UpdateChart(GraphicData2D dataPoint, ActionType action, int index)
+        void UpdateChart(List<GraphicData2D> dataPoint, ActionType action, int index)
         {
             if (DataPointsChart.InvokeRequired)
             {
@@ -276,11 +201,11 @@ namespace Frontend
             switch (action)
             {
                 case ActionType.post:
-                    DataPointsChart.Series["Data Points"].Points.AddXY(dataPoint.x, dataPoint.y);
+                    DataPointsChart.Series["Data Points"].Points.AddXY(dataPoint[dataPoint.Count-1].x, dataPoint[dataPoint.Count-1].y);
                     break;
                 case ActionType.put:
-                    DataPointsChart.Series["Data Points"].Points[index].SetValueXY(dataPoint.x, dataPoint.y);
-                    MessageBox.Show(dataPoint.x.ToString() + " " + dataPoint.y.ToString());
+                    DataPointsChart.Series["Data Points"].Points[index].SetValueXY(dataPoint[index +1].x, dataPoint[index +1].y);
+                    MessageBox.Show(dataPoint[index+1].x.ToString() + " " + dataPoint[index + 1].y.ToString());
                     break;
                 case ActionType.delete:
                     if (index == -1)
@@ -299,7 +224,7 @@ namespace Frontend
 
     #endregion
 
-    #region LeerDeTXT
+        #region LeerDeTXT
     private void LoadTxt_Click(object sender, EventArgs e)
         {
 
@@ -341,8 +266,13 @@ namespace Frontend
                 }
             }
 
+            LoadSaveData();
+            MessageBox.Show("Datos Cargados con exito");
+
         }
         #endregion
+
+        # region GetNumbersFromJson
 
         string GetNumbersFromJson(ref char[] tJs, int i)
             {
@@ -368,7 +298,7 @@ namespace Frontend
                 return tempValue;
             }
 
-
+        #endregion
 
         #region Datos
 
@@ -395,8 +325,40 @@ namespace Frontend
             //TextBoxIndex.Text = "";
             //index = -1;
         }
+
         #endregion
 
+        #region LoadSaveData
+        private async void LoadSaveData ()
+        {
 
+            var client = new HttpClient();
+            var request = new HttpRequestMessage(HttpMethod.Get, "https://localhost:44366/api/Graphic2D");
+
+            var response = await client.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+            var graphicJson = await response.Content.ReadAsStringAsync();
+
+            List<GraphicData2D> graphicList = JsonConvert.DeserializeObject<List<GraphicData2D>>(graphicJson);
+
+            UpdateChartFromSaveData(graphicList);
+
+        }
+        void UpdateChartFromSaveData(List<GraphicData2D> graphicList) {
+
+            DataPointsChart.Series["Data Points"].Points.Clear();
+
+            for (int i = 1; i < graphicList.Count; i++)
+            {
+                DataPointsChart.Series["Data Points"].Points.AddXY(graphicList[i].x, graphicList[i].y);
+                //MessageBox.Show("X: "+graphicList[i].x +" Y: "+ graphicList[i].y);
+            }
+        }
+
+        private void LoadSaveDataButton_Click(object sender, EventArgs e)
+        {
+            LoadSaveData();
+        }
+        #endregion
     }
 }
