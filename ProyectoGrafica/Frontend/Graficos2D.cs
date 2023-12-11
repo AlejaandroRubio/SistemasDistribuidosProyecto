@@ -27,30 +27,39 @@ namespace Frontend
         float y;
         int index = -1;
 
-        enum Action
+        enum ActionType
         {
             post,
             put,
             delete,
         }
 
-        private void SendButton(object sender, EventArgs e)
+        private async void SendButton(object sender, EventArgs e)
         {
             switch (DropDownBox.SelectedIndex)
             {
                 case 0:
-                    POST(null);
+                    await Task.Run(() => POST(null));
+                    await Task.Run(() => GET(ActionType.post, index));
+                    DefaultValues();
                     break;
                 case 1:
                     if (index != -1)
-                        PUT();
+                    {
+                        await Task.Run(() => PUT());
+                        await Task.Run(() => GET(ActionType.put, index));
+                        DefaultValues();
+                    }
                     break;
                 case 2:
-                    DeleteByIndex();
+                    await Task.Run(() => DeleteByIndex());
+                    await Task.Run(() => GET(ActionType.delete, index));
+                    DefaultValues();
                     break;
             }
-
         }
+
+
 
         #region POST
         private async Task POST(GraphicData2D data) {
@@ -86,11 +95,11 @@ namespace Frontend
 
             var graphicJson = await response.Content.ReadAsStringAsync();
 
-
+            /*
             GET(Action.post, index);
 
             DefaultValues();
-
+            */
         }
         #endregion
 
@@ -117,11 +126,11 @@ namespace Frontend
 
             var graphicJson = await response.Content.ReadAsStringAsync();
 
-
+            /*
             GET(Action.put, index);
 
             DefaultValues();
-
+            */
         }
         #endregion
 
@@ -151,15 +160,16 @@ namespace Frontend
 
             /* --------------------------------- */
 
+            /*
             GET(Action.delete, index);
 
             DefaultValues();
-
+            */
         }
         #endregion
 
         #region GET
-        private async void GET(Action action, int index) {
+        private async void GET(ActionType action, int index) {
 
             var client = new HttpClient();
             var request = new HttpRequestMessage(HttpMethod.Get, "https://localhost:44366/api/Graphic2D");
@@ -168,15 +178,14 @@ namespace Frontend
             response.EnsureSuccessStatusCode();
             var graphicJson = await response.Content.ReadAsStringAsync();
 
-            UpdateChart(SanitazeString(graphicJson, action, index), action, index);
-
+            await Task.Run(() => UpdateChart(SanitazeString(graphicJson, action, index), action, index));
 
         }
         #endregion
 
         #region SanatizeString
 
-        GraphicData2D SanitazeString(string json, Action action, int index)
+        GraphicData2D SanitazeString(string json, ActionType action, int index)
         {
             GraphicData2D tempData = new GraphicData2D();
             float sanitizedX = 0;
@@ -186,7 +195,7 @@ namespace Frontend
             char[] tJs = json.ToCharArray();
 
 
-            if (action == Action.post)
+            if (action == ActionType.post)
             {
                 for (int i = json.Length - 1; i > 0; i--)
                 {
@@ -204,7 +213,7 @@ namespace Frontend
                     }
                 }
             }
-            else if (action == Action.put)
+            else if (action == ActionType.put)
             {
                 #region PUT
                 int tempIndexX = index +1;
@@ -231,7 +240,7 @@ namespace Frontend
                 }
                 #endregion
             }
-            else if (action == Action.delete)
+            else if (action == ActionType.delete)
             {
 
             }
@@ -254,18 +263,24 @@ namespace Frontend
         #endregion
 
         #region UpdateChart
-        void UpdateChart(GraphicData2D dataPoint, Action action, int index)
+        void UpdateChart(GraphicData2D dataPoint, ActionType action, int index)
         {
+            if (DataPointsChart.InvokeRequired)
+            {
+                DataPointsChart.Invoke(new Action(() => UpdateChart(dataPoint, action, index)));
+                return;
+            }
+
             switch (action)
             {
-                case Action.post:
+                case ActionType.post:
                     DataPointsChart.Series["Data Points"].Points.AddXY(dataPoint.x, dataPoint.y);
                     break;
-                case Action.put:
+                case ActionType.put:
                     DataPointsChart.Series["Data Points"].Points[index].SetValueXY(dataPoint.x, dataPoint.y);
-                    MessageBox.Show(dataPoint.x. ToString() +  " " + dataPoint.y.ToString());
+                    MessageBox.Show(dataPoint.x.ToString() + " " + dataPoint.y.ToString());
                     break;
-                case Action.delete:
+                case ActionType.delete:
                     if (index == -1)
                         DataPointsChart.Series["Data Points"].Points.Clear();
                     else
@@ -275,10 +290,11 @@ namespace Frontend
 
             DataPointsChart.Invalidate();
         }
-        #endregion
 
-        #region LeerDeTXT
-        private void LoadTxt_Click(object sender, EventArgs e)
+    #endregion
+
+    #region LeerDeTXT
+    private void LoadTxt_Click(object sender, EventArgs e)
         {
 
             ReadAndLoadTXT();
