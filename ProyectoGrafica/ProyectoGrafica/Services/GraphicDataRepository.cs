@@ -7,18 +7,12 @@ using System.Web;
 using OpenTK;
 using Z.Expressions;
 using System.Data;
+using System.Web.Helpers;
 
 namespace Graficas.Services
 {
     public class GraphicDataRepository
     {
-        // Buscar una forma mejor para los paths
-        // Temp Data
-        //string rootFolder = "C:\\Users\\diego\\Desktop\\SistemasDistribuidosProyecto-FormulasIdea\\ProyectoGrafica\\ProyectoGrafica\\Archivos_Compartidos\\temp";
-
-
-        //string meshPath = "C:\\Users\\diego\\Desktop\\SistemasDistribuidosProyecto-FormulasIdea\\ProyectoGrafica\\ProyectoGrafica\\Archivos_Compartidos\\temp\\mesh.txt";
-        //string path = "C:\\Program Files\\SistemasDistribuidosProyecto\\ProyectoGrafica\\ProyectoGrafica\\Archivos_Compartidos\\Global.txt";
 
         static string relativePath = "Archivos_Compartidos\\Global.txt";
         string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, relativePath);
@@ -30,7 +24,6 @@ namespace Graficas.Services
         string meshPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, relatieMeshPath);
 
 
-
         public GraphicDataRepository()
         {
             var ctx = HttpContext.Current;
@@ -38,7 +31,6 @@ namespace Graficas.Services
                 throw new ArgumentNullException(nameof(ctx));
         }
 
-        // POST
         public bool SaveGeneratedMesh(GraphicsDataRequest data)
         {
             // Paso 0 Borrar los TXT temporales si es que existen
@@ -56,10 +48,18 @@ namespace Graficas.Services
             return true;
         }
 
-
         public OpenGLGeneratedMesh GetOpenGLData()
         {
             return ReconstructMesh();
+        }
+
+        void DeleteMeshTemporalTXTs()
+        {
+            string[] files = Directory.GetFiles(rootFolder);
+            foreach (string file in files) 
+            {
+                File.Delete(file);
+            }
         }
 
         OpenGLGeneratedMesh ReconstructMesh()
@@ -175,26 +175,69 @@ namespace Graficas.Services
             return mesh;
         }
 
-
-        string GetNumbersFromJson(ref char[] tJs, int i)
+        OpenGLGeneratedMesh GenerateMeshPlane(int x, int y)
         {
-            string tempValue = "";
-            int j = 0;
-            /* Idenitificar X, Y, Z para conseguir el numero asignado a cada una */
-            j = i + 3;
-            while (true)
+            OpenGLGeneratedMesh openGLGeneratedMesh = new OpenGLGeneratedMesh();
+
+            List<Vector3> tempVertexList = new List<Vector3>();
+
+            for (int i = 0; i < y; i++)
             {
-                tempValue += tJs[j];
-
-                if (j < tJs.Length - 1)
-                    j++;
-                else
-                    break;
-
-                if (tJs[j] == 124) // 124 = |
-                    break;
+                for (int j = 0; j < x; j++)
+                {
+                    // Crea una nueva instancia de Vector3 para cada vértice
+                    Vector3 tempV = new Vector3(j, 0, i);
+                    tempVertexList.Add(tempV);
+                }
             }
-            return tempValue;
+
+            openGLGeneratedMesh.tempVertexList = tempVertexList;
+
+            List<uint> indices = new List<uint>();
+
+            for (int i = 0; i < y - 1; i++)
+            {
+                for (int j = 0; j < x - 1; j++)
+                {
+                    // Índices de los cuatro vértices de un cuadrado
+                    uint topLeft = (uint)(i * x + j);
+                    uint topRight = (uint)(i * x + (j + 1));
+                    uint bottomLeft = (uint)((i + 1) * x + j);
+                    uint bottomRight = (uint)((i + 1) * x + (j + 1));
+
+                    // Triángulo superior del cuadrado
+                    indices.Add(topLeft);
+                    indices.Add(topRight);
+                    indices.Add(bottomLeft);
+
+                    // Triángulo inferior del cuadrado
+                    indices.Add(bottomLeft);
+                    indices.Add(topRight);
+                    
+                    indices.Add(bottomRight);
+                 }
+            }
+
+            openGLGeneratedMesh.indices = indices;
+
+            List<Vector2> tempTextures = new List<Vector2>();
+
+            for (int i = 0; i < y; i++)
+            {
+                for (int j = 0; j < x; j++)
+                {
+                    // Normalizar las coordenadas de textura en el rango [0, 1]
+                    float u = (float)j / (x) * x;
+                    float v = (float)i / (y) * y;
+
+                    tempTextures.Add(new Vector2(u, v));
+                }
+            }
+
+            openGLGeneratedMesh.tempTexturesCoords = tempTextures;
+
+
+            return openGLGeneratedMesh;
         }
 
         void CalculateY(ref OpenGLGeneratedMesh mesh, String formula)
@@ -209,7 +252,7 @@ namespace Graficas.Services
             }
             
         }
-
+        
         void PremadeFunctions(ref OpenGLGeneratedMesh mesh, int actionNumber)
         {
             float newX = 0;
@@ -315,27 +358,7 @@ namespace Graficas.Services
                 }
             }
         }
-
-        void DeleteMeshTemporalTXTs()
-        {
-            string[] files = Directory.GetFiles(rootFolder);
-            foreach (string file in files) 
-            {
-                File.Delete(file);
-            }
-        }
-
-        void CreateMeshTemporalTXTs()
-        {
-            if (!File.Exists(meshPath))
-            {
-                // Crear Mesh
-                using (StreamWriter sw = File.CreateText(meshPath))
-                    sw.WriteLine("");
-            }
-        }
-
-        // Esto es el input del usuario al archivo global
+        
         void WritePostToTXT(OpenGLGeneratedMesh data)
         {
             CreateMeshTemporalTXTs();
@@ -385,73 +408,37 @@ namespace Graficas.Services
                 }
             }
         }
-
-
-        OpenGLGeneratedMesh GenerateMeshPlane(int x, int y)
+        
+        void CreateMeshTemporalTXTs()
         {
-            OpenGLGeneratedMesh openGLGeneratedMesh = new OpenGLGeneratedMesh();
-
-            List<Vector3> tempVertexList = new List<Vector3>();
-
-            for (int i = 0; i < y; i++)
+            if (!File.Exists(meshPath))
             {
-                for (int j = 0; j < x; j++)
-                {
-                    // Crea una nueva instancia de Vector3 para cada vértice
-                    Vector3 tempV = new Vector3(j, 0, i);
-                    tempVertexList.Add(tempV);
-                }
+                // Crear Mesh
+                using (StreamWriter sw = File.CreateText(meshPath))
+                    sw.WriteLine("");
             }
-
-            openGLGeneratedMesh.tempVertexList = tempVertexList;
-
-            List<uint> indices = new List<uint>();
-
-            for (int i = 0; i < y - 1; i++)
-            {
-                for (int j = 0; j < x - 1; j++)
-                {
-                    // Índices de los cuatro vértices de un cuadrado
-                    uint topLeft = (uint)(i * x + j);
-                    uint topRight = (uint)(i * x + (j + 1));
-                    uint bottomLeft = (uint)((i + 1) * x + j);
-                    uint bottomRight = (uint)((i + 1) * x + (j + 1));
-
-                    // Triángulo superior del cuadrado
-                    indices.Add(topLeft);
-                    indices.Add(topRight);
-                    indices.Add(bottomLeft);
-
-                    // Triángulo inferior del cuadrado
-                    indices.Add(bottomLeft);
-                    indices.Add(topRight);
-                    
-                    indices.Add(bottomRight);
-                 }
-            }
-
-            openGLGeneratedMesh.indices = indices;
-
-            List<Vector2> tempTextures = new List<Vector2>();
-
-            for (int i = 0; i < y; i++)
-            {
-                for (int j = 0; j < x; j++)
-                {
-                    // Normalizar las coordenadas de textura en el rango [0, 1]
-                    float u = (float)j / (x) * x;
-                    float v = (float)i / (y) * y;
-
-                    tempTextures.Add(new Vector2(u, v));
-                }
-            }
-
-            openGLGeneratedMesh.tempTexturesCoords = tempTextures;
-
-
-            return openGLGeneratedMesh;
         }
+        
+        string GetNumbersFromJson(ref char[] tJs, int i)
+        {
+            string tempValue = "";
+            int j = 0;
+            /* Idenitificar X, Y, Z para conseguir el numero asignado a cada una */
+            j = i + 3;
+            while (true)
+            {
+                tempValue += tJs[j];
 
+                if (j < tJs.Length - 1)
+                    j++;
+                else
+                    break;
+
+                if (tJs[j] == 124) // 124 = |
+                    break;
+            }
+            return tempValue;
+        }
 
     }
 }
