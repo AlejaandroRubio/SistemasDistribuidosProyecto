@@ -25,7 +25,6 @@ namespace Frontend
 
         bool loadJustOnce = false;
 
-        // Animaciones
         float amplitude;
         float frequency;
         bool animate;
