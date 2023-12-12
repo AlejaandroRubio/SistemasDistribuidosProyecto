@@ -42,22 +42,21 @@ namespace Frontend
             switch (DropDownBox.SelectedIndex)
             {
                 case 0:
-                    await Task.Run(() => POST(null));
-                    await Task.Run(() => GET(ActionType.post, index));
+                    await POST(null);
+                    await GET(ActionType.post, index);
                     DefaultValues();
                     break;
                 case 1:
                     if (index != -1)
                     {
-                        await Task.Run(() => PUT());
-                        await Task.Delay(1000);
-                        await Task.Run(() => GET(ActionType.put, index));
+                        await PUT();
+                        await GET(ActionType.put, index);
                         DefaultValues();
                     }
                     break;
                 case 2:
-                    await Task.Run(() => DeleteByIndex());
-                    await Task.Run(() => GET(ActionType.delete, index));
+                    await DeleteByIndex();
+                    await GET(ActionType.delete, index);
                     DefaultValues();
                     break;
             }
@@ -108,7 +107,7 @@ namespace Frontend
         #endregion
 
         #region PUT
-        private async void PUT() {
+        private async Task PUT() {
 
             var putGraphic = new GraphicData2D();
             putGraphic.x = x;
@@ -139,7 +138,7 @@ namespace Frontend
         #endregion
 
         #region DELETE
-        private async void DeleteByIndex() {
+        private async Task DeleteByIndex() {
 
 
             var putGraphic = new GraphicData2D();
@@ -162,18 +161,11 @@ namespace Frontend
 
             var graphicJson = await response.Content.ReadAsStringAsync();
 
-            /* --------------------------------- */
-
-            /*
-            GET(Action.delete, index);
-
-            DefaultValues();
-            */
         }
         #endregion
 
         #region GET
-        private async void GET(ActionType action, int index) {
+        private async Task GET(ActionType action, int index) {
 
             var client = new HttpClient();
             var request = new HttpRequestMessage(HttpMethod.Get, "https://localhost:44366/api/Graphic2D");
@@ -223,8 +215,8 @@ namespace Frontend
 
     #endregion
 
-        #region LeerDeTXT
-    private void LoadTxt_Click(object sender, EventArgs e)
+        #region Read From Local TXT
+        private void LoadTxt_Click(object sender, EventArgs e)
         {
 
             ReadAndLoadTXT();
@@ -249,13 +241,13 @@ namespace Frontend
                 {
                     if (tempCharArr[j] == 120) // 120 = x
                     {
-                        float.TryParse(GetNumbersFromJson(ref tempCharArr, j), out sanitizedX);
+                        float.TryParse(GetNumbersFromLocalTXT(ref tempCharArr, j), out sanitizedX);
                         tempData.x = sanitizedX;
                     }
 
                     if (tempCharArr[j] == 121) // 121 = y
                     {
-                        float.TryParse(GetNumbersFromJson(ref tempCharArr, j), out sanitizedY);
+                        float.TryParse(GetNumbersFromLocalTXT(ref tempCharArr, j), out sanitizedY);
                         tempData.y = sanitizedY;
                         await Task.Delay(2);
                         await POST(tempData);
@@ -271,9 +263,9 @@ namespace Frontend
         }
         #endregion
 
-        # region GetNumbersFromJson
+        # region Get Numbers From Local TXT
 
-        string GetNumbersFromJson(ref char[] tJs, int i)
+        string GetNumbersFromLocalTXT(ref char[] tJs, int i)
             {
                 string tempValue = "";
                 int j = 0;
