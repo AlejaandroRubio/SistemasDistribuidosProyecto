@@ -205,7 +205,6 @@ namespace Frontend
                     break;
                 case ActionType.put:
                     DataPointsChart.Series["Data Points"].Points[index].SetValueXY(dataPoint[index +1].x, dataPoint[index +1].y);
-                    MessageBox.Show(dataPoint[index+1].x.ToString() + " " + dataPoint[index + 1].y.ToString());
                     break;
                 case ActionType.delete:
                     if (index == -1)

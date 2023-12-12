@@ -41,7 +41,6 @@
             this.XTextBox = new System.Windows.Forms.TextBox();
             this.LoadTxt = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.LoadSaveDataButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.DataPointsChart)).BeginInit();
             this.SuspendLayout();
             // 
@@ -72,7 +71,7 @@
             series1.Legend = "Legend1";
             series1.Name = "Data Points";
             this.DataPointsChart.Series.Add(series1);
-            this.DataPointsChart.Size = new System.Drawing.Size(627, 343);
+            this.DataPointsChart.Size = new System.Drawing.Size(584, 293);
             this.DataPointsChart.TabIndex = 12;
             this.DataPointsChart.Text = "DataPointsCharts";
             // 
@@ -135,10 +134,10 @@
             // 
             // LoadTxt
             // 
-            this.LoadTxt.Location = new System.Drawing.Point(11, 302);
+            this.LoadTxt.Location = new System.Drawing.Point(44, 247);
             this.LoadTxt.Margin = new System.Windows.Forms.Padding(4);
             this.LoadTxt.Name = "LoadTxt";
-            this.LoadTxt.Size = new System.Drawing.Size(94, 52);
+            this.LoadTxt.Size = new System.Drawing.Size(128, 38);
             this.LoadTxt.TabIndex = 20;
             this.LoadTxt.Text = "Load Local Data";
             this.LoadTxt.UseVisualStyleBackColor = true;
@@ -146,7 +145,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(60, 204);
+            this.button1.Location = new System.Drawing.Point(44, 201);
             this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(128, 38);
@@ -155,23 +154,11 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.SendButton);
             // 
-            // LoadSaveDataButton
-            // 
-            this.LoadSaveDataButton.Location = new System.Drawing.Point(116, 302);
-            this.LoadSaveDataButton.Margin = new System.Windows.Forms.Padding(4);
-            this.LoadSaveDataButton.Name = "LoadSaveDataButton";
-            this.LoadSaveDataButton.Size = new System.Drawing.Size(94, 52);
-            this.LoadSaveDataButton.TabIndex = 21;
-            this.LoadSaveDataButton.Text = "Load Save Data";
-            this.LoadSaveDataButton.UseVisualStyleBackColor = true;
-            this.LoadSaveDataButton.Click += new System.EventHandler(this.LoadSaveDataButton_Click);
-            // 
             // Graficos2D
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(858, 367);
-            this.Controls.Add(this.LoadSaveDataButton);
+            this.ClientSize = new System.Drawing.Size(811, 317);
             this.Controls.Add(this.LoadTxt);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label2);
@@ -202,6 +189,5 @@
         private System.Windows.Forms.TextBox XTextBox;
         private System.Windows.Forms.Button LoadTxt;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button LoadSaveDataButton;
     }
 }
