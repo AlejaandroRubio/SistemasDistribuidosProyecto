@@ -2,8 +2,10 @@
   "ExpandedNodes": [
     "",
     "\\ProyectoGrafica",
-    "\\ProyectoGrafica\\Frontend"
+    "\\ProyectoGrafica\\Frontend",
+    "\\ProyectoGrafica\\ProyectoGrafica",
+    "\\ProyectoGrafica\\ProyectoGrafica\\Services"
   ],
-  "SelectedNode": "\\ProyectoGrafica\\Frontend\\Program.cs",
+  "SelectedNode": "\\ProyectoGrafica\\ProyectoGrafica\\Services\\GraphicDataRepository.cs",
   "PreviewInSolutionExplorer": false
 }

@@ -291,34 +291,6 @@ namespace Frontend
 
         #endregion
 
-        #region Datos
-
-        private void TextBoxIndex_TextChanged(object sender, EventArgs e)
-        {
-            int.TryParse(TextBoxIndex.Text, out index);
-        }
-
-        private void XTextBox_TextChanged(object sender, EventArgs e)
-        {
-            float.TryParse(XTextBox.Text, out x);
-        }
-
-        private void YTextBox_TextChanged(object sender, EventArgs e)
-        {
-            float.TryParse(YTextBox.Text, out y);
-        }
-
-
-        void DefaultValues()
-        {
-            XTextBox.Text = "";
-            YTextBox.Text = "";
-            //TextBoxIndex.Text = "";
-            //index = -1;
-        }
-
-        #endregion
-
         #region LoadSaveData
         private async void LoadSaveData ()
         {
@@ -351,5 +323,34 @@ namespace Frontend
             LoadSaveData();
         }
         #endregion
+
+        #region Datos
+
+        private void TextBoxIndex_TextChanged(object sender, EventArgs e)
+        {
+            int.TryParse(TextBoxIndex.Text, out index);
+        }
+
+        private void XTextBox_TextChanged(object sender, EventArgs e)
+        {
+            float.TryParse(XTextBox.Text, out x);
+        }
+
+        private void YTextBox_TextChanged(object sender, EventArgs e)
+        {
+            float.TryParse(YTextBox.Text, out y);
+        }
+
+
+        void DefaultValues()
+        {
+            XTextBox.Text = "";
+            YTextBox.Text = "";
+            //TextBoxIndex.Text = "";
+            //index = -1;
+        }
+
+        #endregion
+
     }
 }

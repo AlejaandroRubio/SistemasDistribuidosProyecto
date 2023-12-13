@@ -40,7 +40,37 @@ namespace Frontend
 
         }
 
+        private async void GenerateChartBtn(object sender, EventArgs e)
+        {
+            loadJustOnce = true;
+            GraphicsDataRequest sendData = new GraphicsDataRequest();
+            sendData.x = x;
+            sendData.z = z;
+            sendData.formula = formula;
+            sendData.premadeFunctionIndex = comboBox1.SelectedIndex;
+            
+            await POST(sendData);
+            await GET();
 
+            CallRenderer();
+        }
+
+        void CallRenderer()
+        {
+            using (MainPipeline program = new MainPipeline(960, 540))
+            {
+                if (loadJustOnce)
+                {
+                    program.SetUpVerticesIndexAndTextures(receivedMesh.tempVertexList, receivedMesh.indices, receivedMesh.tempTexturesCoords , amplitude, frequency, animate, step);
+                    loadJustOnce = false;
+                }
+
+                program.Run();
+            }
+        }
+
+
+        #region POST
         private async Task POST(GraphicsDataRequest data)
         {
 
@@ -61,8 +91,9 @@ namespace Frontend
 
             var graphicJson = await response.Content.ReadAsStringAsync();
         }
+        #endregion
 
-
+        #region GET
         private async Task GET()
         {
             var client = new HttpClient();
@@ -75,39 +106,9 @@ namespace Frontend
             receivedMesh = new OpenGLGeneratedMesh();
             receivedMesh = JsonConvert.DeserializeObject<OpenGLGeneratedMesh>(graphicJson);
         }
+        #endregion
 
-        
-        void CallRenderer()
-        {
-            using (MainPipeline program = new MainPipeline(960, 540))
-            {
-                if (loadJustOnce)
-                {
-                    program.SetUpVerticesIndexAndTextures(receivedMesh.tempVertexList, receivedMesh.indices, receivedMesh.tempTexturesCoords , amplitude, frequency, animate, step);
-                    loadJustOnce = false;
-                }
-
-                program.Run();
-            }
-        }
-
-
-        private async void GenerateChartBtn(object sender, EventArgs e)
-        {
-            loadJustOnce = true;
-            GraphicsDataRequest sendData = new GraphicsDataRequest();
-            sendData.x = x;
-            sendData.z = z;
-            sendData.formula = formula;
-            sendData.premadeFunctionIndex = comboBox1.SelectedIndex;
-            
-            await POST(sendData);
-            await GET();
-
-            CallRenderer();
-        }
-
-        #region Forms
+        #region Datos
 
         private void xTextBox(object sender, EventArgs e)
         {

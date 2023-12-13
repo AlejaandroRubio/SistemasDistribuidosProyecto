@@ -13,7 +13,7 @@ namespace Graficas.Services
 {
     public class GraphicDataRepository
     {
-
+        #region PATHS
         static string relativePath = "Archivos_Compartidos\\Global.txt";
         string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, relativePath);
 
@@ -22,7 +22,7 @@ namespace Graficas.Services
 
         static string relatieMeshPath = "Archivos_Compartidos\\temp\\mesh.txt";
         string meshPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, relatieMeshPath);
-
+        #endregion
 
         public GraphicDataRepository()
         {
@@ -31,35 +31,11 @@ namespace Graficas.Services
                 throw new ArgumentNullException(nameof(ctx));
         }
 
-        public bool SaveGeneratedMesh(GraphicsDataRequest data)
-        {
-            // Paso 0 Borrar los TXT temporales si es que existen
-            DeleteMeshTemporalTXTs();
-            // Paso 1 Generar la geometria
-            OpenGLGeneratedMesh tempMesh = GenerateMeshPlane(data.x, data.z);
-            // Paso 2 Calcular la Y en funcion de la formula
-            if (data.premadeFunctionIndex == -1 || data.premadeFunctionIndex == 11)
-                CalculateY(ref tempMesh, data.formula);
-            else
-                PremadeFunctions(ref tempMesh, data.premadeFunctionIndex);
-            // Paso 3 Guardar la informacion a un TXT
-            WritePostToTXT(tempMesh);
 
-            return true;
-        }
-
+        #region GET
         public OpenGLGeneratedMesh GetOpenGLData()
         {
             return ReconstructMesh();
-        }
-
-        void DeleteMeshTemporalTXTs()
-        {
-            string[] files = Directory.GetFiles(rootFolder);
-            foreach (string file in files) 
-            {
-                File.Delete(file);
-            }
         }
 
         OpenGLGeneratedMesh ReconstructMesh()
@@ -174,6 +150,34 @@ namespace Graficas.Services
 
             return mesh;
         }
+        #endregion
+
+        #region POST
+        public bool SaveGeneratedMesh(GraphicsDataRequest data)
+        {
+            // Paso 0 Borrar los TXT temporales si es que existen
+            DeleteMeshTemporalTXTs();
+            // Paso 1 Generar la geometria
+            OpenGLGeneratedMesh tempMesh = GenerateMeshPlane(data.x, data.z);
+            // Paso 2 Calcular la Y en funcion de la formula
+            if (data.premadeFunctionIndex == -1 || data.premadeFunctionIndex == 11)
+                CalculateY(ref tempMesh, data.formula);
+            else
+                PremadeFunctions(ref tempMesh, data.premadeFunctionIndex);
+            // Paso 3 Guardar la informacion a un TXT
+            WritePostToTXT(tempMesh);
+
+            return true;
+        }
+
+        void DeleteMeshTemporalTXTs()
+        {
+            string[] files = Directory.GetFiles(rootFolder);
+            foreach (string file in files) 
+            {
+                File.Delete(file);
+            }
+        }
 
         OpenGLGeneratedMesh GenerateMeshPlane(int x, int y)
         {
@@ -239,7 +243,9 @@ namespace Graficas.Services
 
             return openGLGeneratedMesh;
         }
+        #endregion
 
+        #region FORMULAS
         void CalculateY(ref OpenGLGeneratedMesh mesh, String formula)
         {
             formula = formula.ToLower();
@@ -358,7 +364,9 @@ namespace Graficas.Services
                 }
             }
         }
-        
+        #endregion
+
+        #region WritePostToTXT
         void WritePostToTXT(OpenGLGeneratedMesh data)
         {
             CreateMeshTemporalTXTs();
@@ -418,7 +426,9 @@ namespace Graficas.Services
                     sw.WriteLine("");
             }
         }
-        
+        #endregion
+
+        #region GetNumbersFromJson
         string GetNumbersFromJson(ref char[] tJs, int i)
         {
             string tempValue = "";
@@ -439,6 +449,6 @@ namespace Graficas.Services
             }
             return tempValue;
         }
-
+        #endregion
     }
 }

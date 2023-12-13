@@ -78,6 +78,7 @@ namespace Graficas.Services
             {
                 try
                 {
+                    /*
                     // Recuperar los datos de la cache
                     var currentData = ctx.Cache[CacheKey] as GraphicData2D[];
                     // Si la cache de entrada es nula, inicializar un array nuevo
@@ -87,9 +88,10 @@ namespace Graficas.Services
                     var dataList = currentData.ToList();
                     dataList.Add(data);
                     ctx.Cache[CacheKey] = dataList.ToArray();
-
+                    */
                     // Escribir al TXT Global
-                    WritePostToTXT(dataList[dataList.Count - 1]);
+                    //WritePostToTXT(dataList[dataList.Count - 1]);
+                    WritePostToTXT(data);
 
                     return true;
                 }
