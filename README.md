@@ -1,2 +1,2 @@
 # Sistemas Distribuidos : Visualizacion De Graficas
-![DiagramaDeClases](ProyectoGrafica\ProyectoGrafica\Diagramas\Diagrama.svg)
+![DiagramaDeClases](ProyectoGrafica\Diagramas\Diagrama.svg)
